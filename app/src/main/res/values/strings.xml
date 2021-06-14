@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Popular Movies Kotlin</string>
+
+    <string name="api_key">e412d0c0cda73c4b13c5e6029f92547b</string>
+    <string name="api_language">pt-BR</string>
+    <string name="api_url">https://api.themoviedb.org/3/</string>
+    <string name="api_image_url">https://image.tmdb.org/t/p/w500</string>
+</resources>
