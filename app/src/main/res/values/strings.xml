@@ -5,4 +5,6 @@
     <string name="api_language">pt-BR</string>
     <string name="api_url">https://api.themoviedb.org/3/</string>
     <string name="api_image_url">https://image.tmdb.org/t/p/w500</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
