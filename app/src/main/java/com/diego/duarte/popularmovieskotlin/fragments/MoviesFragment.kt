@@ -1,20 +1,18 @@
 package com.diego.duarte.popularmovieskotlin.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.models.Movies
 import com.diego.duarte.popularmovieskotlin.network.api.ApiService
 import com.diego.duarte.popularmovieskotlin.network.api.RetrofitBuilder
 import com.diego.duarte.popularmovieskotlin.views.adapters.MoviesAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 
 /**
@@ -23,8 +21,9 @@ import retrofit2.Response
  * create an instance of this fragment.
  */
 class MoviesFragment : Fragment() {
-    private var recyclerView: RecyclerView? = null
-
+    private lateinit var recyclerView: RecyclerView
+    private var page: Int = 1
+    private var isLoading: Boolean = true;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,27 +34,60 @@ class MoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        recyclerView = activity?.findViewById(R.id.movies_recycler)
-        val request = RetrofitBuilder().buildRetrofit(getString(R.string.api_url)).create(ApiService::class.java)
-        val call = request.getMovies(getString(R.string.api_key), getString(R.string.api_language), 1)
-        call.enqueue(object : Callback<Movies> {
-            override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
-                if(response.isSuccessful){
-                    recyclerView?.apply {
-                        setHasFixedSize(true)
-                        layoutManager = GridLayoutManager(activity, 3)
-                        adapter = MoviesAdapter(response.body()!!.results)
+        if (container != null) {
+            recyclerView = container.findViewById(R.id.movies_recycler)
+            val gridLayoutManager = GridLayoutManager(container.context, 2)
+            recyclerView?.apply {
+                setHasFixedSize(true)
+                layoutManager = gridLayoutManager
+                adapter = MoviesAdapter()
+
+            }
+
+            loadMovies()
+
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val totalItemCount = (gridLayoutManager.itemCount  - 1)
+                    if(!isLoading) {
+                        if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == totalItemCount) {
+                            page++
+                            loadMovies()
+
+                        }
                     }
+
                 }
-            }
-
-            override fun onFailure(call: Call<Movies>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
+            })
+        }
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
+
+    fun loadMovies(){
+        isLoading = true
+        val request = RetrofitBuilder().buildRetrofit(getString(R.string.api_url)).create(ApiService::class.java)
+        val call = request.getMovies(getString(R.string.api_key), getString(R.string.api_language), page)
+        call.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    if(it.isSuccessful){
+                        val adapter: MoviesAdapter = recyclerView?.adapter as MoviesAdapter
+                        for (result in it.body()?.results!!) {
+                            adapter.addItem(result)
+
+                        }
+                    }
+
+                },          // onNext
+                { e -> println("Erro") }, // onError
+                {
+                    println("Complete")
+                    isLoading = false
+                }   // onComplete
+            )
+    }
+
 
 }

@@ -9,7 +9,9 @@ import com.bumptech.glide.Glide
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.models.Movie
 
-class MoviesAdapter(private val movies: ArrayList<Movie>) : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+
+    private var movies: ArrayList<Movie> = ArrayList()
 
     class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -17,16 +19,18 @@ class MoviesAdapter(private val movies: ArrayList<Movie>) : RecyclerView.Adapter
 
         init {
             posterView = itemView.findViewById(R.id.movie_image_poster)
+            itemView.setOnClickListener { }
         }
         fun bind(movie: Movie){
             Glide
                 .with(itemView.context)
                 .load(itemView.context.getString(R.string.api_image_url) + movie.poster_path)
+                .placeholder(R.color.purple_200)
                 .into(posterView)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesAdapter.MoviesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
 

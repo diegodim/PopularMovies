@@ -1,5 +1,6 @@
 package com.diego.duarte.popularmovieskotlin.network.api
 
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.*
@@ -14,6 +15,7 @@ class RetrofitBuilder {
     fun buildRetrofit(baseUrl: String): Retrofit  {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .client(buildClient())
             .baseUrl(baseUrl)
             .build()
