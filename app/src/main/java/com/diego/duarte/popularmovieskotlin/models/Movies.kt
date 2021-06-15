@@ -1,5 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.models
 
 data class Movies(
-    val results: ArrayList<Movie>
+    val page: Int,
+    val results: ArrayList<Movie>,
+    val total_pages: Int,
 )

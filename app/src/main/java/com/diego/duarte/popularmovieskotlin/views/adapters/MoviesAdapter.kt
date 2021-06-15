@@ -25,7 +25,7 @@ class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
             Glide
                 .with(itemView.context)
                 .load(itemView.context.getString(R.string.api_image_url) + movie.poster_path)
-                .placeholder(R.color.purple_200)
+                .placeholder(R.color.white)
                 .into(posterView)
         }
     }
