@@ -1,10 +1,7 @@
 package com.diego.duarte.popularmovieskotlin
 
-import android.os.Bundle
-import androidx.fragment.app.testing.launchFragment
-import androidx.fragment.app.testing.launchFragmentInContainer
-import com.diego.duarte.popularmovieskotlin.fragments.MovieFragment
-import com.diego.duarte.popularmovieskotlin.fragments.MoviesFragment
+import com.diego.duarte.popularmovieskotlin.fragments.movies.MoviesFragment
+import com.diego.duarte.popularmovieskotlin.fragments.movies.MoviesPresenter
 import com.diego.duarte.popularmovieskotlin.models.Movies
 import io.reactivex.rxjava3.observers.TestObserver
 import org.hamcrest.CoreMatchers.`is`
@@ -12,16 +9,16 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import retrofit2.Response
 
-class MoviesFragmentUnitTest {
+class MoviesPresenterTest {
 
     @Test
     fun movieApiIsLoadingCorrectData(){
         //given
-        val objectUnderTest = MoviesFragment()
+        val objectUnderTest = MoviesPresenter()
         val testObserver = TestObserver<Response<Movies>>()
 
         //when
-        val result = objectUnderTest.buildMovies("https://api.themoviedb.org/3/", "e412d0c0cda73c4b13c5e6029f92547b","pt-BR",1)
+        val result = objectUnderTest.buildMovies( )
         result?.subscribe(testObserver)
 
         //then

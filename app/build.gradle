@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
 }
 
+
 android {
     compileSdkVersion 30
 
@@ -12,8 +13,8 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -25,7 +26,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            // Replace TMDB Api key either here - '"YOUR_TMDB_API_KEY"'
+            // Or add TMDB_API_KEY constant to gradle.properties
+            it.buildConfigField 'String', 'TMDB_API_KEY', TMDB_API_KEY
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -54,10 +61,14 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    implementation 'com.android.support:multidex:1.0.3'
+
     testImplementation 'junit:junit:4.+'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
