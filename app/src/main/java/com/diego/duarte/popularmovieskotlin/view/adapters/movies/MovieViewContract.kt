@@ -1,8 +1,6 @@
-package com.diego.duarte.popularmovieskotlin.views.adapters.movies
+package com.diego.duarte.popularmovieskotlin.view.adapters.movies
 
-import android.content.Context
-import android.view.View
-import com.diego.duarte.popularmovieskotlin.models.Movie
+import com.diego.duarte.popularmovieskotlin.model.data.Movie
 
 interface MovieViewContract {
 

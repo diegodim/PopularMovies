@@ -1,12 +1,11 @@
-package com.diego.duarte.popularmovieskotlin.views.adapters.movies
+package com.diego.duarte.popularmovieskotlin.view.adapters.movies
 
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.fragments.movies.MoviesPresenter
-import com.diego.duarte.popularmovieskotlin.models.Movie
+import com.diego.duarte.popularmovieskotlin.model.data.Movie
 
 class MovieViewHolder(itemView: View, presenter: MovieViewPresenter) : RecyclerView.ViewHolder(itemView), MovieViewContract.ItemView {
 

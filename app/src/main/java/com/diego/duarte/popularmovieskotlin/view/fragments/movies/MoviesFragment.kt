@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.fragments.movies
+package com.diego.duarte.popularmovieskotlin.view.fragments.movies
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.models.Movie
-import com.diego.duarte.popularmovieskotlin.views.adapters.movies.MoviesAdapter
-
+import com.diego.duarte.popularmovieskotlin.model.data.Movie
+import com.diego.duarte.popularmovieskotlin.presenter.MoviesPresenter
+import com.diego.duarte.popularmovieskotlin.view.adapters.movies.MoviesAdapter
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
 
 /**
@@ -18,14 +21,16 @@ import com.diego.duarte.popularmovieskotlin.views.adapters.movies.MoviesAdapter
  * Use the [MoviesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MoviesFragment : Fragment(), MoviesContract.View {
-    private lateinit var presenter: MoviesPresenter
+class MoviesFragment : Fragment(), MoviesView {
+
+
     private lateinit var recyclerView: RecyclerView
 
+    @Inject lateinit var presenter: MoviesPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
-        presenter = MoviesPresenter()
-        presenter.view = this
     }
 
     override fun onCreateView(

@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.models
+package com.diego.duarte.popularmovieskotlin.model.data
 
 data class Movies(
     val page: Int,

@@ -1,10 +1,10 @@
-package com.diego.duarte.popularmovieskotlin.views.adapters.movies
+package com.diego.duarte.popularmovieskotlin.view.adapters.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.models.Movie
+import com.diego.duarte.popularmovieskotlin.model.data.Movie
 
 class MoviesAdapter() : RecyclerView.Adapter<MovieViewHolder>() {
 
