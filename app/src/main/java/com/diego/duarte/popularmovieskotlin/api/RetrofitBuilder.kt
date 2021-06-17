@@ -11,14 +11,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitBuilder {
 
-    val BASE_URL: String = "https://api.themoviedb.org/3/"
+
 
     fun buildRetrofit(): Retrofit  {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .client(buildClient())
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.TMDB_URL)
             .build()
 
     }

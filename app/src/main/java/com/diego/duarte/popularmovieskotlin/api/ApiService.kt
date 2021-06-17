@@ -13,7 +13,12 @@ interface ApiService {
 
 
     @GET("discover/movie?language=pt-BR")
-    fun getMovies(
+    fun getPopularMovies(
+        @Query("page") page: Int
+    ): Observable<Response<Movies>>
+
+    @GET("discover/movie?language=pt-BR&sort_by=vote_count.desc")
+    fun getTopMovies(
         @Query("page") page: Int
     ): Observable<Response<Movies>>
 

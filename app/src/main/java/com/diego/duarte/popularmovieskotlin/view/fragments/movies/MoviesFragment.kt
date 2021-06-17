@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.model.data.Movie
 import com.diego.duarte.popularmovieskotlin.presenter.MoviesPresenter
@@ -54,12 +55,14 @@ class MoviesFragment : Fragment(), MoviesView {
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
-        recyclerView.adapter = MoviesAdapter()
+        recyclerView.adapter = MoviesAdapter(presenter)
+
+        recyclerView.setHasFixedSize(true)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                presenter.getNextMoviesPage(recyclerView)
+                presenter.getNextMoviesPage(recyclerView.layoutManager as GridLayoutManager)
             }
         })
 
@@ -83,6 +86,10 @@ class MoviesFragment : Fragment(), MoviesView {
 
         adapter.insertItem(movie)
 
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
 

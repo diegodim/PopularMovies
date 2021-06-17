@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.view.activities
+package com.diego.duarte.popularmovieskotlin.view.activities.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

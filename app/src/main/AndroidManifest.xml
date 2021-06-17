@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PopularMoviesKotlin">
-        <activity android:name="com.diego.duarte.popularmovieskotlin.view.activities.MainActivity">
+        <activity android:name="com.diego.duarte.popularmovieskotlin.view.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,23 +1,44 @@
 package com.diego.duarte.popularmovieskotlin.view.adapters.movies
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.diego.duarte.popularmovieskotlin.BuildConfig
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.model.data.Movie
+import com.diego.duarte.popularmovieskotlin.presenter.MoviesPresenter
 
-class MoviesAdapter() : RecyclerView.Adapter<MovieViewHolder>() {
+class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
-    private val presenter = MovieViewPresenter()
+    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MovieItemView {
 
+        private val posterView: ImageView
+
+        init {
+            posterView = itemView.findViewById(R.id.movie_image_poster)
+            itemView.setOnClickListener {
+                presenter.onItemClicked(adapterPosition)
+            }
+        }
+
+        override fun bindItem(movie: Movie) {
+            Glide
+                .with(itemView.context)
+                .load(BuildConfig.TMDB_IMAGE_URL + movie.poster_path)
+                .placeholder(R.drawable.movie_placeholder)
+                .into(posterView)
+        }
+    }
+    
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
 
-        presenter.view = parent
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_item_movie, parent, false)
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-
-        return MovieViewHolder(view, presenter)
+        return MovieViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
