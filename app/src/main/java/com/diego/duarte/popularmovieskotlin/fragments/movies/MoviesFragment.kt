@@ -1,6 +1,5 @@
 package com.diego.duarte.popularmovieskotlin.fragments.movies
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.models.Movie
-import com.diego.duarte.popularmovieskotlin.views.adapters.MoviesAdapter
+import com.diego.duarte.popularmovieskotlin.views.adapters.movies.MoviesAdapter
 
 
 
@@ -33,37 +32,32 @@ class MoviesFragment : Fragment(), MoviesContract.View {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_movies, container, false)
         // Inflate the layout for this fragment
-        initializeRecyclerView(rootView)
-        return rootView
+        return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        presenter.loadMovies()
+        initializeRecyclerView(view)
+        presenter.getMovies()
 
     }
 
     private fun initializeRecyclerView(view: View) {
 
-        if (view != null) {
 
-            recyclerView = view.findViewById(R.id.movies_recycler)
+        recyclerView = view.findViewById(R.id.movies_recycler)
 
-            recyclerView.setHasFixedSize(true)
-            recyclerView.layoutManager = GridLayoutManager(view.context, 2)
-            recyclerView.adapter = MoviesAdapter()
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+        recyclerView.adapter = MoviesAdapter()
 
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                presenter.getNextMoviesPage(recyclerView)
+            }
+        })
 
-
-            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    presenter.nextPage(recyclerView)
-                }
-            })
-        }
 
     }
 
@@ -79,11 +73,11 @@ class MoviesFragment : Fragment(), MoviesContract.View {
         TODO("Not yet implemented")
     }
 
-    override fun showMovies(movies: ArrayList<Movie>) {
+    override fun showMovie(movie: Movie) {
         val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
-        for (movie in movies) {
-            adapter.addItem(movie)
-        }
+
+        adapter.insertItem(movie)
+
     }
 
 
