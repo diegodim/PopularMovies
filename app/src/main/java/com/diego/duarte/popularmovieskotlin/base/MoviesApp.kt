@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin
+package com.diego.duarte.popularmovieskotlin.base
 
 import android.app.Application
 import com.diego.duarte.popularmovieskotlin.di.component.AppComponent

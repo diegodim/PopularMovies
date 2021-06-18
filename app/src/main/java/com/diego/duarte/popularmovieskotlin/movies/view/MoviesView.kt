@@ -1,6 +1,6 @@
-package com.diego.duarte.popularmovieskotlin.view.fragments.movies
+package com.diego.duarte.popularmovieskotlin.movies.view
 
-import com.diego.duarte.popularmovieskotlin.model.data.Movie
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
 
 interface MoviesView {
     fun showLoadingDialog()

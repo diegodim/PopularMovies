@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.api
+package com.diego.duarte.popularmovieskotlin.data.source.api
 
 import okhttp3.Interceptor
 import okhttp3.Response

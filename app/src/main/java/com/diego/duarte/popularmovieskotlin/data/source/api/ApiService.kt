@@ -1,7 +1,7 @@
-package com.diego.duarte.popularmovieskotlin.api
+package com.diego.duarte.popularmovieskotlin.data.source.api
 
 
-import com.diego.duarte.popularmovieskotlin.model.data.Movies
+import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
 import retrofit2.http.GET

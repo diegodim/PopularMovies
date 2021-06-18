@@ -1,10 +1,10 @@
 package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.di.scope.MoviesScope
-import com.diego.duarte.popularmovieskotlin.view.fragments.movies.MoviesFragment
-import com.diego.duarte.popularmovieskotlin.model.interactors.MoviesInteractor
-import com.diego.duarte.popularmovieskotlin.presenter.MoviesPresenter
-import com.diego.duarte.popularmovieskotlin.view.fragments.movies.MoviesView
+import com.diego.duarte.popularmovieskotlin.movies.view.MoviesFragment
+import com.diego.duarte.popularmovieskotlin.movies.model.MoviesInteractor
+import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
+import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
 import dagger.Module
 import dagger.Provides
 

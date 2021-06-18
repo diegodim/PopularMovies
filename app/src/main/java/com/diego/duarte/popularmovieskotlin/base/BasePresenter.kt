@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.presenter
+package com.diego.duarte.popularmovieskotlin.base
 
 import androidx.annotation.CallSuper
 import io.reactivex.rxjava3.disposables.CompositeDisposable

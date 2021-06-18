@@ -2,7 +2,7 @@ package com.diego.duarte.popularmovieskotlin.di.component
 
 import android.app.Application
 import com.diego.duarte.popularmovieskotlin.di.module.BuilderModule
-import com.diego.duarte.popularmovieskotlin.MoviesApp
+import com.diego.duarte.popularmovieskotlin.base.MoviesApp
 import com.diego.duarte.popularmovieskotlin.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component

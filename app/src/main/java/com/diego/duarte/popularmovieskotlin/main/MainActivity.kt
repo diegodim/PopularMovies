@@ -1,9 +1,9 @@
-package com.diego.duarte.popularmovieskotlin.view.activities.main
+package com.diego.duarte.popularmovieskotlin.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.view.fragments.movies.MoviesFragment
+import com.diego.duarte.popularmovieskotlin.movies.view.MoviesFragment
 
 class MainActivity : AppCompatActivity() {
 

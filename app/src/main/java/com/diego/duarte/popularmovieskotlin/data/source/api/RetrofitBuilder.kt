@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.api
+package com.diego.duarte.popularmovieskotlin.data.source.api
 
 import com.diego.duarte.popularmovieskotlin.BuildConfig
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
@@ -13,13 +13,13 @@ class RetrofitBuilder {
 
 
 
-    fun buildRetrofit(): Retrofit  {
+    fun buildRetrofit(): ApiService? {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .client(buildClient())
             .baseUrl(BuildConfig.TMDB_URL)
-            .build()
+            .build().create(ApiService::class.java)
 
     }
 

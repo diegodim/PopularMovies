@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.view.fragments.movies
+package com.diego.duarte.popularmovieskotlin.movies.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.model.data.Movie
-import com.diego.duarte.popularmovieskotlin.presenter.MoviesPresenter
-import com.diego.duarte.popularmovieskotlin.view.adapters.movies.MoviesAdapter
-import dagger.android.AndroidInjection
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 

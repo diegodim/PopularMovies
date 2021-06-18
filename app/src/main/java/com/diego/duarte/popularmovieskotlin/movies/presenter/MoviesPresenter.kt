@@ -1,10 +1,11 @@
-package com.diego.duarte.popularmovieskotlin.presenter
+package com.diego.duarte.popularmovieskotlin.movies.presenter
 
 import androidx.recyclerview.widget.GridLayoutManager
-import com.diego.duarte.popularmovieskotlin.model.data.Movie
-import com.diego.duarte.popularmovieskotlin.model.interactors.MoviesInteractor
-import com.diego.duarte.popularmovieskotlin.view.adapters.movies.MovieItemView
-import com.diego.duarte.popularmovieskotlin.view.fragments.movies.MoviesView
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.base.BasePresenter
+import com.diego.duarte.popularmovieskotlin.movies.model.MoviesInteractor
+import com.diego.duarte.popularmovieskotlin.movies.view.MovieItemView
+import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
 import io.reactivex.rxjava3.observers.DisposableObserver
 import kotlin.collections.ArrayList
 

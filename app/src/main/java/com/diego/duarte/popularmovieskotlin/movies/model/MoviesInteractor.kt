@@ -1,9 +1,8 @@
-package com.diego.duarte.popularmovieskotlin.model.interactors
+package com.diego.duarte.popularmovieskotlin.movies.model
 
-import com.diego.duarte.popularmovieskotlin.model.data.Movie
-import com.diego.duarte.popularmovieskotlin.api.ApiService
-import com.diego.duarte.popularmovieskotlin.api.RetrofitBuilder
-import com.diego.duarte.popularmovieskotlin.model.data.Movies
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.data.source.api.RetrofitBuilder
+import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.observers.DisposableObserver
@@ -15,22 +14,22 @@ class MoviesInteractor{
 
 
     fun getPopularMovies(page: Int, observer: DisposableObserver<ArrayList<Movie>>) {
-        val client = RetrofitBuilder().buildRetrofit().create(ApiService::class.java)
-        val request =  client.getPopularMovies(page)
+        val client = RetrofitBuilder().buildRetrofit()
+        val request = client?.getPopularMovies(page)
         buildMovies(request, observer)
 
     }
 
     fun getTopMovies(page: Int, observer: DisposableObserver<ArrayList<Movie>>) {
-        val client = RetrofitBuilder().buildRetrofit().create(ApiService::class.java)
-        val request =  client.getTopMovies(page)
+        val client = RetrofitBuilder().buildRetrofit()
+        val request = client?.getTopMovies(page)
         buildMovies(request, observer)
 
     }
 
-    private fun buildMovies(request: Observable<Response<Movies>>, observer: DisposableObserver<ArrayList<Movie>>)
+    private fun buildMovies(request: Observable<Response<Movies>>?, observer: DisposableObserver<ArrayList<Movie>>)
     {
-        request.subscribeOn(Schedulers.io())
+        request?.subscribeOn(Schedulers.io())
         ?.observeOn(AndroidSchedulers.mainThread())
         ?.subscribe(
             {

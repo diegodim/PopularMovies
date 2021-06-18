@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.model.data
+package com.diego.duarte.popularmovieskotlin.data.model
 
 import java.util.*
 

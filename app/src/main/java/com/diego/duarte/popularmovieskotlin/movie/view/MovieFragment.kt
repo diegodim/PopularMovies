@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.view.fragments.movie
+package com.diego.duarte.popularmovieskotlin.movie.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

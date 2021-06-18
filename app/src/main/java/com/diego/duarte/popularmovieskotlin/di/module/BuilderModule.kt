@@ -1,7 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.di.scope.MoviesScope
-import com.diego.duarte.popularmovieskotlin.view.fragments.movies.MoviesFragment
+import com.diego.duarte.popularmovieskotlin.movies.view.MoviesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

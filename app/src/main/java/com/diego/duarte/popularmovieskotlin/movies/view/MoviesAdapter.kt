@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.view.adapters.movies
+package com.diego.duarte.popularmovieskotlin.movies.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.diego.duarte.popularmovieskotlin.BuildConfig
 import com.diego.duarte.popularmovieskotlin.R
-import com.diego.duarte.popularmovieskotlin.model.data.Movie
-import com.diego.duarte.popularmovieskotlin.presenter.MoviesPresenter
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
 
 class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
@@ -28,7 +28,7 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
             Glide
                 .with(itemView.context)
                 .load(BuildConfig.TMDB_IMAGE_URL + movie.poster_path)
-                .placeholder(R.drawable.movie_placeholder)
+                .placeholder(R.drawable.image_movie_placeholder)
                 .into(posterView)
         }
     }
