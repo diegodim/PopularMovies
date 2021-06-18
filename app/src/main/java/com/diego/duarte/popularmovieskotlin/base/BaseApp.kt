@@ -7,7 +7,7 @@ import com.diego.duarte.popularmovieskotlin.di.module.AppModule
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 
-class MoviesApp: DaggerApplication() {
+class BaseApp: DaggerApplication() {
 
     lateinit var injector: AndroidInjector<out DaggerApplication>
 
