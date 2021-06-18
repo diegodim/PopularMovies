@@ -3,13 +3,13 @@ package com.diego.duarte.popularmovieskotlin.movies.presenter
 import androidx.recyclerview.widget.GridLayoutManager
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
-import com.diego.duarte.popularmovieskotlin.movies.model.MoviesInteractor
+import com.diego.duarte.popularmovieskotlin.movies.model.MoviesModel
 import com.diego.duarte.popularmovieskotlin.movies.view.MovieItemView
 import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
 import io.reactivex.rxjava3.observers.DisposableObserver
 import kotlin.collections.ArrayList
 
-class MoviesPresenter (private val interator: MoviesInteractor, private val view: MoviesView) : BasePresenter() {
+class MoviesPresenter (private val interator: MoviesModel, private val view: MoviesView) : BasePresenter() {
 
 
     private var page: Int = 1

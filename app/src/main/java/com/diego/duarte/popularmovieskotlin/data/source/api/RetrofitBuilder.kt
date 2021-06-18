@@ -12,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitBuilder {
 
 
-
     fun buildRetrofit(): ApiService? {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())

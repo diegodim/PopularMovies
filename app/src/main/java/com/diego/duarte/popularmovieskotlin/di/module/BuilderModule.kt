@@ -10,6 +10,6 @@ abstract class BuilderModule {
 
     @MoviesScope
     @ContributesAndroidInjector(modules = [MoviesModule::class])
-    abstract fun bindMoviesFragment(): MoviesFragment
+    abstract fun moviesFragment(): MoviesFragment
 
 }
