@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.diego.duarte.popularmovieskotlin.BuildConfig
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
@@ -29,14 +31,19 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
                 .with(itemView.context)
                 .load(BuildConfig.TMDB_IMAGE_URL + movie.poster_path)
                 .placeholder(R.drawable.image_movie_placeholder)
+                .centerInside()
+                .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
                 .into(posterView)
+        }
+        fun clearVew (){
+            Glide.with(itemView.context).clear(posterView)
         }
     }
     
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_item_movie, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
 
         return MovieViewHolder(view)
     }
@@ -50,8 +57,16 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
         return presenter.itemCount ?: 0
     }
 
-    fun insertItem(movie: Movie){
-        presenter.addItem(movie)
-        notifyItemInserted(itemCount)
+    override fun onViewRecycled(holder: MovieViewHolder) {
+        super.onViewRecycled(holder)
+        holder.clearVew()
     }
+
+    fun insertItems(movie: List<Movie>){
+        presenter.setList(movie)
+        notifyDataSetChanged()
+    }
+
+    fun getList(): List<Movie> = presenter.listMovies()
+
 }

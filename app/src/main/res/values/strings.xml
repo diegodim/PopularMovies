@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Popular Movies Kotlin</string>
+
+    <string name="error_msg_no_connection">Falha na conexão!</string>
+    <string name="error_msg_no_internet">Sem conexão com a internet.</string>
+    <string name="error_msg_unknown">Aconteceu um erro inesperado.</string>
+    <string name="error_msg_timeout">O servidor demorou muito para responder.</string>
+
+    <string name="action_retry">Tentar</string>
+
+    <string name="prompt_load">Carregando...</string>
+
 </resources>

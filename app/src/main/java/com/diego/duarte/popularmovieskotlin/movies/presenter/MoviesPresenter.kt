@@ -1,42 +1,69 @@
 package com.diego.duarte.popularmovieskotlin.movies.presenter
 
 import androidx.recyclerview.widget.GridLayoutManager
-import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.movies.model.MoviesModel
 import com.diego.duarte.popularmovieskotlin.movies.view.MovieItemView
 import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.observers.DisposableObserver
-import kotlin.collections.ArrayList
 
-class MoviesPresenter (private val interator: MoviesModel, private val view: MoviesView) : BasePresenter() {
+class MoviesPresenter (private val model: MoviesModel, private val view: MoviesView) : BasePresenter() {
 
-
+    private var navigation = 0
     private var page: Int = 1
     private var isLoading = false
-    private var movies: ArrayList<Movie> = ArrayList()
+    private var movies: List<Movie> = ArrayList()
+    private lateinit var getMovies: Disposable
 
-    fun getMovies() {
+    val itemCount: Int get() = movies.size
+
+    fun listMovies(): List<Movie> = movies
+
+
+    fun getPopularMovies() {
+        navigation = 0
         isLoading = true
-        val observer = MoviesListObserver()
-        interator.getPopularMovies(page, MoviesListObserver())
+        getMovies = model.getPopularMovies(page, MoviesListObserver())!!
+    }
+
+    fun getTopMovies() {
+        navigation = 1
+        isLoading = true
+        getMovies = model.getTopMovies(page, MoviesListObserver())!!
+    }
+
+    fun firstPage(){
+        page = 1;
+        movies = ArrayList()
+        view.showLoadingDialog()
     }
 
     fun getNextMoviesPage(layoutManager: GridLayoutManager) {
 
         if(!isLoading)
-        if (layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 11) {
+        if (layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 11) {
             page++
-            getMovies()
-
+            if(navigation == 0)
+                getPopularMovies()
+            if(navigation == 1)
+                getTopMovies()
         }
     }
 
-    val itemCount: Int
-        get() = movies.size
+    fun setList(listMovies: List<Movie>) {
+        movies += listMovies
 
-    fun addItem(movie: Movie) {
-        movies.add(movie)
+    }
+
+    fun onRetryClicked()
+    {
+        view.showLoadingDialog()
+        if(navigation == 0)
+            getPopularMovies()
+        if(navigation == 1)
+            getTopMovies()
 
     }
 
@@ -49,20 +76,22 @@ class MoviesPresenter (private val interator: MoviesModel, private val view: Mov
         itemView.bindItem(movies[pos])
     }
 
-    inner class MoviesListObserver : DisposableObserver<ArrayList<Movie>>() {
-        override fun onNext(t: ArrayList<Movie>?) {
-            //view.hideLoadingDialog()
+    inner class MoviesListObserver : DisposableObserver<List<Movie>>() {
+        override fun onNext(t: List<Movie>?) {
+
             if (t != null) {
-                for (movie in t) {
-                    view.showMovie(movie)
-                }
+
+
+                view.hideLoadingDialog();
+                view.showMovies(t)
+
+
             }
             isLoading = false
         }
 
         override fun onError(e: Throwable?) {
-            //view.hideLoadingDialog()
-            //view.showError(it)
+            view.showError(e?.message.toString())
         }
 
         override fun onComplete() {
@@ -71,5 +100,9 @@ class MoviesPresenter (private val interator: MoviesModel, private val view: Mov
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        getMovies.dispose()
+    }
 
 }

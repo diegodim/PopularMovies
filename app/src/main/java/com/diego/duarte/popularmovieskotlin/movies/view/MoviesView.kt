@@ -6,5 +6,5 @@ interface MoviesView {
     fun showLoadingDialog()
     fun hideLoadingDialog()
     fun showError(message: String)
-    fun showMovie(movie: Movie)
+    fun showMovies(movies: List<Movie>)
 }

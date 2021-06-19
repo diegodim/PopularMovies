@@ -1,15 +1,21 @@
 package com.diego.duarte.popularmovieskotlin.movies.view
 
+
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -19,10 +25,15 @@ import javax.inject.Inject
  * Use the [MoviesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MoviesFragment : Fragment(), MoviesView {
+class MoviesFragment : Fragment(), MoviesView, BottomNavigationView.OnNavigationItemSelectedListener {
 
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var viewError: View
+    private lateinit var viewLoading: View
+    private lateinit var buttonError: Button
+    private lateinit var textError: TextView
 
     @Inject lateinit var presenter: MoviesPresenter
 
@@ -36,13 +47,20 @@ class MoviesFragment : Fragment(), MoviesView {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val view = inflater.inflate(R.layout.fragment_movies, container, false)
         initializeRecyclerView(view)
-        presenter.getMovies()
-
+        bottomNavigation = view.findViewById(R.id.movie_nav_view)
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
+        viewError = view.findViewById(R.id.view_error_layout)
+        viewLoading = view.findViewById(R.id.view_loading_layout)
+        textError = view.findViewById(R.id.view_error_txt_cause)
+        buttonError = view.findViewById(R.id.view_error_btn_retry)
+        buttonError.setOnClickListener( View.OnClickListener {
+            presenter.onRetryClicked()
+        })
+        showLoadingDialog()
+        presenter.getPopularMovies()
+        return view
     }
 
     private fun initializeRecyclerView(view: View) {
@@ -67,27 +85,61 @@ class MoviesFragment : Fragment(), MoviesView {
     }
 
     override fun showLoadingDialog() {
-        TODO("Not yet implemented")
+        viewLoading.setVisibility(View.VISIBLE)
+        recyclerView.setVisibility(View.GONE)
+        viewError.setVisibility(View.GONE);
+
     }
 
     override fun hideLoadingDialog() {
-        TODO("Not yet implemented")
+        viewLoading.setVisibility(View.GONE)
+        recyclerView.setVisibility(View.VISIBLE)
+        viewError.setVisibility(View.GONE);
     }
 
     override fun showError(message: String) {
-        TODO("Not yet implemented")
+        viewLoading.setVisibility(View.GONE)
+        recyclerView.setVisibility(View.GONE)
+        viewError.setVisibility(View.VISIBLE)
+        textError.setText(message)
     }
 
-    override fun showMovie(movie: Movie) {
+    override fun showMovies(movies: List<Movie>) {
+
         val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
-
-        adapter.insertItem(movie)
+        adapter.insertItems(movies)
 
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.most_popular -> {
+
+                bottomNavigation.getMenu().getItem(2).setChecked(true)
+                presenter.firstPage()
+                presenter.getPopularMovies()
+
+            }
+            R.id.top_rated -> {
+
+                bottomNavigation.getMenu().getItem(1).setChecked(true)
+                presenter.firstPage()
+                presenter.getTopMovies()
+
+
+            }
+            else -> return false
+        }
+        return true
+    }
+
+
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
     }
+
 
 
 }
