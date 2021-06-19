@@ -1,6 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.movies.presenter
 
 import androidx.recyclerview.widget.GridLayoutManager
+import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.movies.model.MoviesModel
@@ -70,6 +71,8 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     fun onItemClicked(pos: Int) {
         //val movie = movies[pos]
         //Toast.makeText(view., movie.title, Toast.LENGTH_SHORT).show()
+        view.showMovie(movies[pos])
+
     }
 
     fun onBindItemView(itemView: MovieItemView, pos: Int) {

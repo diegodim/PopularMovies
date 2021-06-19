@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
         android:visibility="gone">
-
     </androidx.recyclerview.widget.RecyclerView>
     <include
         layout="@layout/view_loading"

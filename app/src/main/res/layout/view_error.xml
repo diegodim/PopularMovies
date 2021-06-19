@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_huge"
+            android:layout_height="@dimen/spacing_extra_huge"
             app:srcCompat="@drawable/ic_no_connection" />
 
         <TextView

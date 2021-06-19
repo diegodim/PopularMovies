@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.movie.view.MovieFragment
 import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.AndroidSupportInjection
@@ -106,6 +108,15 @@ class MoviesFragment : Fragment(), MoviesView, BottomNavigationView.OnNavigation
         val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
         adapter.insertItems(movies)
 
+    }
+
+    override fun showMovie(movie: Movie) {
+        Toast.makeText(activity, movie.title, Toast.LENGTH_SHORT).show()
+        val fragmentManager = activity?.supportFragmentManager
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+        val fragment = MovieFragment()
+        fragmentTransaction?.replace(R.id.main_fragment, fragment)
+        fragmentTransaction?.commit()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

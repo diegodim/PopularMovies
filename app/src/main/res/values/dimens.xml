@@ -8,6 +8,8 @@
     <dimen name="font_small">12sp</dimen>
 
     <!-- typical spacing between two views -->
+
+    <dimen name="spacing_extra_huge">60dp</dimen>
     <dimen name="spacing_huge">40dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_normal">14dp</dimen>
