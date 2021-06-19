@@ -7,7 +7,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Downsampler
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.BuildConfig
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
@@ -17,10 +19,9 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MovieItemView {
 
-        private val posterView: ImageView
+        private val posterView: ImageView = itemView.findViewById(R.id.movie_image_poster)
 
         init {
-            posterView = itemView.findViewById(R.id.movie_image_poster)
             itemView.setOnClickListener {
                 presenter.onItemClicked(adapterPosition)
             }
@@ -33,6 +34,8 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
                 .placeholder(R.drawable.image_movie_placeholder)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(posterView)
         }
         fun clearVew (){
@@ -44,7 +47,6 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-
         return MovieViewHolder(view)
     }
 
@@ -54,7 +56,7 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
     }
 
     override fun getItemCount(): Int {
-        return presenter.itemCount ?: 0
+        return presenter.itemCount
     }
 
     override fun onViewRecycled(holder: MovieViewHolder) {
@@ -62,11 +64,10 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
         holder.clearVew()
     }
 
-    fun insertItems(movie: List<Movie>){
-        presenter.setList(movie)
-        notifyDataSetChanged()
+    fun insertItems(movies: List<Movie>){
+        val count = this.itemCount
+        presenter.setList(movies)
+        notifyItemRangeInserted(count, movies.size)
     }
-
-    fun getList(): List<Movie> = presenter.listMovies()
 
 }

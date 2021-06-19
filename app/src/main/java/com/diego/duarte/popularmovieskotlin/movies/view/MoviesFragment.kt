@@ -1,7 +1,6 @@
 package com.diego.duarte.popularmovieskotlin.movies.view
 
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -50,14 +49,12 @@ class MoviesFragment : Fragment(), MoviesView, BottomNavigationView.OnNavigation
         val view = inflater.inflate(R.layout.fragment_movies, container, false)
         initializeRecyclerView(view)
         bottomNavigation = view.findViewById(R.id.movie_nav_view)
-        bottomNavigation.setOnNavigationItemSelectedListener(this);
+        bottomNavigation.setOnNavigationItemSelectedListener(this)
         viewError = view.findViewById(R.id.view_error_layout)
         viewLoading = view.findViewById(R.id.view_loading_layout)
         textError = view.findViewById(R.id.view_error_txt_cause)
         buttonError = view.findViewById(R.id.view_error_btn_retry)
-        buttonError.setOnClickListener( View.OnClickListener {
-            presenter.onRetryClicked()
-        })
+        buttonError.setOnClickListener { presenter.onRetryClicked() }
         showLoadingDialog()
         presenter.getPopularMovies()
         return view
@@ -67,12 +64,12 @@ class MoviesFragment : Fragment(), MoviesView, BottomNavigationView.OnNavigation
 
 
         recyclerView = view.findViewById(R.id.movies_recycler)
-
+        recyclerView.setHasFixedSize(true)
+        recyclerView.recycledViewPool.clear();
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+        recyclerView.setItemViewCacheSize(20)
         recyclerView.adapter = MoviesAdapter(presenter)
-
-        recyclerView.setHasFixedSize(true)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -85,23 +82,23 @@ class MoviesFragment : Fragment(), MoviesView, BottomNavigationView.OnNavigation
     }
 
     override fun showLoadingDialog() {
-        viewLoading.setVisibility(View.VISIBLE)
-        recyclerView.setVisibility(View.GONE)
-        viewError.setVisibility(View.GONE);
+        viewLoading.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        viewError.visibility = View.GONE
 
     }
 
     override fun hideLoadingDialog() {
-        viewLoading.setVisibility(View.GONE)
-        recyclerView.setVisibility(View.VISIBLE)
-        viewError.setVisibility(View.GONE);
+        viewLoading.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        viewError.visibility = View.GONE
     }
 
     override fun showError(message: String) {
-        viewLoading.setVisibility(View.GONE)
-        recyclerView.setVisibility(View.GONE)
-        viewError.setVisibility(View.VISIBLE)
-        textError.setText(message)
+        viewLoading.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        viewError.visibility = View.VISIBLE
+        textError.text = message
     }
 
     override fun showMovies(movies: List<Movie>) {
@@ -115,17 +112,17 @@ class MoviesFragment : Fragment(), MoviesView, BottomNavigationView.OnNavigation
         when (item.itemId) {
             R.id.most_popular -> {
 
-                bottomNavigation.getMenu().getItem(2).setChecked(true)
                 presenter.firstPage()
+                bottomNavigation.menu.getItem(2).isChecked = true
+                this.view?.let { initializeRecyclerView(it) }
                 presenter.getPopularMovies()
 
             }
             R.id.top_rated -> {
-
-                bottomNavigation.getMenu().getItem(1).setChecked(true)
                 presenter.firstPage()
+                bottomNavigation.menu.getItem(1).isChecked = true
+                this.view?.let { initializeRecyclerView(it) }
                 presenter.getTopMovies()
-
 
             }
             else -> return false

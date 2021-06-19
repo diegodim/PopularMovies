@@ -35,7 +35,7 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     }
 
     fun firstPage(){
-        page = 1;
+        page = 1
         movies = ArrayList()
         view.showLoadingDialog()
     }
@@ -53,7 +53,7 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     }
 
     fun setList(listMovies: List<Movie>) {
-        movies += listMovies
+        movies = movies + listMovies
 
     }
 
@@ -68,7 +68,7 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     }
 
     fun onItemClicked(pos: Int) {
-        val movie = movies[pos]
+        //val movie = movies[pos]
         //Toast.makeText(view., movie.title, Toast.LENGTH_SHORT).show()
     }
 
@@ -81,10 +81,8 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
 
             if (t != null) {
 
-
-                view.hideLoadingDialog();
+                view.hideLoadingDialog()
                 view.showMovies(t)
-
 
             }
             isLoading = false
