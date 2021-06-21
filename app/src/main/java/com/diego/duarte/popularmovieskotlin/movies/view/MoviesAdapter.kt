@@ -13,13 +13,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.BuildConfig
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
+import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 
 class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MovieItemView {
 
-        private val posterView: ImageView = itemView.findViewById(R.id.movie_image_poster)
+        private val imagePoster: ImageView = itemView.findViewById(R.id.item_movie_image)
 
         init {
             itemView.setOnClickListener {
@@ -31,15 +31,15 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
             Glide
                 .with(itemView.context)
                 .load(BuildConfig.TMDB_IMAGE_URL + movie.poster_path)
-                .placeholder(R.drawable.image_movie_placeholder)
+                .placeholder(R.drawable.movie_placeholder)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .into(posterView)
+                .into(imagePoster)
         }
         fun clearVew (){
-            Glide.with(itemView.context).clear(posterView)
+            Glide.with(itemView.context).clear(imagePoster)
         }
     }
     

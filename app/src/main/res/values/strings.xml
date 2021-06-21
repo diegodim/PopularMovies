@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies Kotlin</string>
+    <string name="app_name">Popular Movies</string>
 
     <string name="error_msg_no_connection">Falha na conexão!</string>
     <string name="error_msg_no_internet">Sem conexão com a internet.</string>
@@ -9,5 +9,6 @@
     <string name="action_retry">Tentar</string>
 
     <string name="prompt_load">Carregando...</string>
+
 
 </resources>

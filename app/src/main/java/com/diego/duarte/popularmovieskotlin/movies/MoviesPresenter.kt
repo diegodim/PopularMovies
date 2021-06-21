@@ -1,10 +1,8 @@
-package com.diego.duarte.popularmovieskotlin.movies.presenter
+package com.diego.duarte.popularmovieskotlin.movies
 
 import androidx.recyclerview.widget.GridLayoutManager
-import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.movies.model.MoviesModel
 import com.diego.duarte.popularmovieskotlin.movies.view.MovieItemView
 import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
 import io.reactivex.rxjava3.disposables.Disposable
@@ -19,8 +17,6 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     private lateinit var getMovies: Disposable
 
     val itemCount: Int get() = movies.size
-
-    fun listMovies(): List<Movie> = movies
 
 
     fun getPopularMovies() {
@@ -69,8 +65,6 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     }
 
     fun onItemClicked(pos: Int) {
-        //val movie = movies[pos]
-        //Toast.makeText(view., movie.title, Toast.LENGTH_SHORT).show()
         view.showMovie(movies[pos])
 
     }

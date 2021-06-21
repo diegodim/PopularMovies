@@ -2,9 +2,9 @@ package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
 import com.diego.duarte.popularmovieskotlin.di.scope.MoviesScope
-import com.diego.duarte.popularmovieskotlin.movies.view.MoviesFragment
-import com.diego.duarte.popularmovieskotlin.movies.model.MoviesModel
-import com.diego.duarte.popularmovieskotlin.movies.presenter.MoviesPresenter
+import com.diego.duarte.popularmovieskotlin.movies.MoviesModel
+import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
+import com.diego.duarte.popularmovieskotlin.movies.view.MoviesActivity
 import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ class MoviesModule {
 
     @MoviesScope
     @Provides
-    fun provideView(fragment: MoviesFragment) = fragment as MoviesView
+    fun provideView(activity: MoviesActivity) = activity as MoviesView
 
     @MoviesScope
     @Provides

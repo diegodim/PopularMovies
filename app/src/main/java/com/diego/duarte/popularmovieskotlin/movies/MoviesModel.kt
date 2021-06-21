@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.movies.model
+package com.diego.duarte.popularmovieskotlin.movies
 
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
@@ -17,7 +17,7 @@ class MoviesModel(val repository: MoviesRepository){
         observer: DisposableObserver<List<Movie>>
     ): @NonNull Disposable? {
 
-        return repository.getMoviesByPopularity(page)?.subscribeOn(Schedulers.computation())
+        return repository.getMoviesByPopularity(page)?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(
                 {
@@ -37,7 +37,7 @@ class MoviesModel(val repository: MoviesRepository){
     fun getTopMovies(page: Int, observer: DisposableObserver<List<Movie>>): @NonNull Disposable? {
 
 
-        return repository.getMoviesByRating(page)?.subscribeOn(Schedulers.computation())
+        return repository.getMoviesByRating(page)?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(
                 {
