@@ -2,8 +2,10 @@ package com.diego.duarte.popularmovieskotlin.movie.view
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,7 @@ import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
-import com.diego.duarte.popularmovieskotlin.movies.view.MoviesAdapter
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import dagger.android.AndroidInjection
 import java.text.SimpleDateFormat
@@ -43,6 +45,12 @@ class MovieActivity : AppCompatActivity(), MovieView {
     private lateinit var textScore: TextView
     private lateinit var textVotes: TextView
     private lateinit var rateScore: RatingBar
+    private lateinit var viewError: View
+    private lateinit var viewLoading: View
+    private lateinit var buttonError: Button
+    private lateinit var textError: TextView
+    private lateinit var appBar: AppBarLayout
+    private lateinit var layout: NestedScrollView
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +70,16 @@ class MovieActivity : AppCompatActivity(), MovieView {
         textVotes = findViewById(R.id.movie_text_total_votes)
         rateScore = findViewById(R.id.movie_rating_score)
 
+        layout = findViewById(R.id.movie_layout)
+        appBar = findViewById(R.id.movie_app_bar)
+        viewError = findViewById(R.id.view_error_layout)
+        viewLoading = findViewById(R.id.view_loading_layout)
+        textError = findViewById(R.id.view_error_txt_cause)
+        buttonError = findViewById(R.id.view_error_btn_retry)
+        buttonError.setOnClickListener { presenter.onRetryClicked() }
+        showLoadingDialog()
         presenter.showMovie()
+
     }
 
     private fun initializeRecyclerView() {
@@ -70,30 +87,46 @@ class MovieActivity : AppCompatActivity(), MovieView {
 
         recyclerView = findViewById(R.id.movie_rv_videos)
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.recycledViewPool.clear()
+        recyclerView.setItemViewCacheSize(20)
+        val layoutManager= LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = VideosAdapter(presenter)
-
-
+        recyclerView.layoutManager = layoutManager
+        recyclerView.isNestedScrollingEnabled = false
 
     }
 
     override fun showLoadingDialog() {
-        TODO("Not yet implemented")
+        viewLoading.visibility = View.VISIBLE
+        appBar.setExpanded(false)
+        appBar.isActivated = false
+        layout.visibility = View.GONE
+        viewError.visibility = View.GONE
     }
 
     override fun hideLoadingDialog() {
-        TODO("Not yet implemented")
+        viewLoading.visibility = View.GONE
+        appBar.setExpanded(true)
+        appBar.isActivated = true
+        layout.visibility = View.VISIBLE
+        viewError.visibility = View.GONE
     }
 
     override fun showError(message: String) {
-        TODO("Not yet implemented")
+        viewLoading.visibility = View.GONE
+        appBar.setExpanded(false)
+        appBar.isActivated = true
+        layout.visibility = View.GONE
+        viewError.visibility = View.VISIBLE
+        textError.text = message
     }
 
     override fun showMovie(movie: Movie) {
         Glide
             .with(this)
-            .load(BuildConfig.TMDB_IMAGE_URL + movie.backdrop_path)
-            .placeholder(R.color.white)
+            .load(this.getString(R.string.url_tmdb_image) + movie.backdrop_path)
+            .placeholder(R.color.gray)
             .centerInside()
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -102,7 +135,7 @@ class MovieActivity : AppCompatActivity(), MovieView {
 
         Glide
             .with(this)
-            .load(BuildConfig.TMDB_IMAGE_URL + movie.poster_path)
+            .load(this.getString(R.string.url_tmdb_image)  + movie.poster_path)
             .placeholder(R.drawable.movie_placeholder)
             .centerInside()
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
@@ -120,7 +153,7 @@ class MovieActivity : AppCompatActivity(), MovieView {
     }
 
     override fun showVideos(videos: List<Video>) {
-        println("key:"+videos[0].key)
+        //println("key:"+videos[0].key)
         Toast.makeText(this, videos[0].key, Toast.LENGTH_SHORT).show()
         val adapter: VideosAdapter = recyclerView.adapter as VideosAdapter
         adapter.insertItems(videos)

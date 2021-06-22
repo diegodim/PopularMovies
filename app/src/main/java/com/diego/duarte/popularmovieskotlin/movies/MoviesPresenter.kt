@@ -64,7 +64,7 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
 
     }
 
-    fun onItemClicked(pos: Int) {
+    fun onMovieClicked(pos: Int) {
         view.showMovie(movies[pos])
 
     }
@@ -78,8 +78,9 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
 
             if (t != null) {
 
-                view.hideLoadingDialog()
+
                 view.showMovies(t)
+                view.hideLoadingDialog()
 
             }
             isLoading = false

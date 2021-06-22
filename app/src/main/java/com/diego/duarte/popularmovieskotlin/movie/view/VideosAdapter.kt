@@ -22,16 +22,16 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
         private val imageThumbnail: ImageView = itemView.findViewById(R.id.video_image_thumbnail)
 
         init {
-            //itemView.setOnClickListener {
-                //presenter.onItemClicked(adapterPosition)
-            //}
+            itemView.setOnClickListener {
+                presenter.onTrailerClicked(adapterPosition)
+            }
         }
 
         override fun bindItem(video: Video) {
             Glide
                 .with(itemView.context)
-                .load("https://img.youtube.com/vi/" +video.key+"/0.jpg")
-                .placeholder(R.drawable.movie_placeholder)
+                .load(itemView.context.getString(R.string.url_youtube_thumbnail,video.key))
+                .placeholder(R.color.gray)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

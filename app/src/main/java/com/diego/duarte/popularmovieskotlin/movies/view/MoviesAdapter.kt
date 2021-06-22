@@ -10,7 +10,6 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.diego.duarte.popularmovieskotlin.BuildConfig
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
@@ -23,14 +22,14 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
 
         init {
             itemView.setOnClickListener {
-                presenter.onItemClicked(adapterPosition)
+                presenter.onMovieClicked(adapterPosition)
             }
         }
 
         override fun bindItem(movie: Movie) {
             Glide
                 .with(itemView.context)
-                .load(BuildConfig.TMDB_IMAGE_URL + movie.poster_path)
+                .load(itemView.context.getString(R.string.url_tmdb_image) + movie.poster_path)
                 .placeholder(R.drawable.movie_placeholder)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)

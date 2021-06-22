@@ -33,30 +33,35 @@ class MoviePresenter (private val model: MovieModel, private val view: MovieView
         itemView.bindItem(videos[position])
     }
 
-    fun onItemClicked(adapterPosition: Int) {
-        //TODO("Not yet implemented")
-    }
 
     inner class VideosListObserver : DisposableObserver<List<Video>>() {
         override fun onNext(t: List<Video>?) {
 
             if (t != null) {
 
-                //view.hideLoadingDialog()
-                println("key:"+t[0].key)
                 view.showVideos(t)
+                view.hideLoadingDialog()
 
             }
 
         }
 
         override fun onError(e: Throwable?) {
-            //view.showError(e?.message.toString())
+            view.showError(e?.message.toString())
         }
 
         override fun onComplete() {
             TODO("Not yet implemented")
         }
+
+    }
+
+    fun onRetryClicked() {
+        view.showLoadingDialog()
+        showMovie()
+    }
+
+    fun onTrailerClicked(position: Int) {
 
     }
 }

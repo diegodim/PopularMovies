@@ -20,7 +20,11 @@
     <string name="title_popular">Popular</string>
     <string name="title_top_rated">Top Rated</string>
     <string name="title_favorite">Favorite</string>
-    <string name="youtube_thumbnail_url">https://img.youtube.com/vi/%1$s/0.jpg</string>
+
+    <string name="url_youtube_thumbnail">https://img.youtube.com/vi/%1$s/0.jpg</string>
+    <string name="url_tmdb_image">https://image.tmdb.org/t/p/w500</string>
+    <string name="url_tmdb">https://api.themoviedb.org/3/</string>
+
 
 
 </resources>
