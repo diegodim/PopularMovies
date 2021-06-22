@@ -17,4 +17,7 @@ class MoviesRepository @Inject constructor() {
 
     fun getMoviesByRating( page: Int) = RetrofitBuilder().buildRetrofit()?.getTopMovies(page)
 
+
+    fun getMovieVideos(id: Int) = RetrofitBuilder().buildRetrofit()?.getMovieVideos(id)
+
 }

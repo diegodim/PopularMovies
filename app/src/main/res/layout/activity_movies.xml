@@ -49,6 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/movies_menu"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>/>
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

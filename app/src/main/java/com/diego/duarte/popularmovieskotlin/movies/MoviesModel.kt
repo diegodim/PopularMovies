@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.observers.DisposableObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlin.collections.ArrayList
 
-class MoviesModel(val repository: MoviesRepository){
+class MoviesModel(private val repository: MoviesRepository){
 
 
     fun getPopularMovies(
@@ -22,8 +22,8 @@ class MoviesModel(val repository: MoviesRepository){
             ?.subscribe(
                 {
                     if (it.isSuccessful) {
-                        val results = it.body()!!.results as ArrayList<Movie>
-                        observer.onNext(results)
+
+                        observer.onNext(it.body()!!.results)
                     }
 
                 },          // onNext
@@ -42,8 +42,8 @@ class MoviesModel(val repository: MoviesRepository){
             ?.subscribe(
                 {
                     if (it.isSuccessful) {
-                        val results = it.body()!!.results as ArrayList<Movie>
-                        observer.onNext(results)
+
+                        observer.onNext(it.body()!!.results)
                     }
 
                 },          // onNext

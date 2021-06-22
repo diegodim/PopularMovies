@@ -99,7 +99,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
     }
 
     override fun showMovie(movie: Movie) {
-        Toast.makeText(this, movie.title, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, movie.title, Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MovieActivity::class.java)
         intent.putExtra(MovieActivity.INTENT_EXTRA_MOVIE, movie)
         startActivity(intent)

@@ -1,14 +1,26 @@
 <resources>
     <string name="app_name">Popular Movies</string>
 
-    <string name="error_msg_no_connection">Falha na conexão!</string>
-    <string name="error_msg_no_internet">Sem conexão com a internet.</string>
-    <string name="error_msg_unknown">Aconteceu um erro inesperado.</string>
-    <string name="error_msg_timeout">O servidor demorou muito para responder.</string>
+    <string name="error_message_no_connection">Falha na conexão!</string>
+    <string name="error_message_no_internet">Sem conexão com a internet.</string>
+    <string name="error_message_unknown">Aconteceu um erro inesperado.</string>
+    <string name="error_message_timeout">O servidor demorou muito para responder.</string>
 
     <string name="action_retry">Tentar</string>
 
-    <string name="prompt_load">Carregando...</string>
+    <string name="message_load">Carregando...</string>
+
+    <string name="content_image_poster">Image Poster</string>
+    <string name="content_image_backdrop">Image backdrop</string>
+    <string name="content_fb_favorite">Movie favorite</string>
+    <string name="content_image_no_connection">No connectio</string>
+
+    <string name="title_synopsis">Sinopse</string>
+    <string name="title_reviews">Reviews</string>
+    <string name="title_popular">Popular</string>
+    <string name="title_top_rated">Top Rated</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="youtube_thumbnail_url">https://img.youtube.com/vi/%1$s/0.jpg</string>
 
 
 </resources>

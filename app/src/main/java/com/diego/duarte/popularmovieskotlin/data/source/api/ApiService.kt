@@ -2,6 +2,7 @@ package com.diego.duarte.popularmovieskotlin.data.source.api
 
 
 import com.diego.duarte.popularmovieskotlin.data.model.Movies
+import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response

@@ -19,7 +19,7 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MovieItemView {
 
-        private val imagePoster: ImageView = itemView.findViewById(R.id.item_movie_image)
+        private val imagePoster: ImageView = itemView.findViewById(R.id.item_image_poster)
 
         init {
             itemView.setOnClickListener {
