@@ -24,6 +24,7 @@
     <string name="url_youtube_thumbnail">https://img.youtube.com/vi/%1$s/0.jpg</string>
     <string name="url_tmdb_image">https://image.tmdb.org/t/p/w500</string>
     <string name="url_tmdb">https://api.themoviedb.org/3/</string>
+    <string name="url_youtube_video">https://www.youtube.com/watch?v=</string>
 
 
 

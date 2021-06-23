@@ -6,12 +6,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -58,7 +58,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
         recyclerView.setHasFixedSize(true)
         recyclerView.recycledViewPool.clear()
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        recyclerView.setItemViewCacheSize(20)
+        recyclerView.setItemViewCacheSize(4)
         recyclerView.adapter = MoviesAdapter(presenter)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -91,7 +91,7 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
         textError.text = message
     }
 
-    override fun showMovies(movies: List<Movie>) {
+    override fun showMovies(movies: Movies) {
 
         val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
         adapter.insertItems(movies)

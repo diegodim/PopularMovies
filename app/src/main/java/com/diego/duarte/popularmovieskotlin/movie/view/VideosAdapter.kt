@@ -12,19 +12,20 @@ import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Video
+import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 
 class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
 
 
-    inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), VideoItemView {
+    inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), VideoItemView,
+        View.OnClickListener {
 
         private val imageThumbnail: ImageView = itemView.findViewById(R.id.video_image_thumbnail)
 
         init {
-            itemView.setOnClickListener {
-                presenter.onTrailerClicked(adapterPosition)
-            }
+            itemView.setOnClickListener(this)
+            imageThumbnail.setOnClickListener(this)
         }
 
         override fun bindItem(video: Video) {
@@ -34,12 +35,15 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
                 .placeholder(R.color.gray)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageThumbnail)
         }
         fun clearVew (){
             Glide.with(itemView.context).clear(imageThumbnail)
+        }
+
+        override fun onClick(v: View?) {
+            presenter.onTrailerClicked(adapterPosition)
         }
     }
 
@@ -64,9 +68,8 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
         holder.clearVew()
     }
 
-    fun insertItems(videos: List<Video>){
-        val count = this.itemCount
+    fun insertItems(videos: Videos){
         presenter.setList(videos)
-        notifyItemRangeInserted(count, videos.size)
+        notifyDataSetChanged()
     }
 }

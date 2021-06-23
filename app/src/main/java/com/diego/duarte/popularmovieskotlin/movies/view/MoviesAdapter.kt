@@ -12,19 +12,19 @@ import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 
 class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
-    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MovieItemView {
+    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MovieItemView,
+        View.OnClickListener {
 
         private val imagePoster: ImageView = itemView.findViewById(R.id.item_image_poster)
 
         init {
-            itemView.setOnClickListener {
-                itemView.requestFocus()
-                presenter.onMovieClicked(adapterPosition)
-            }
+            imagePoster.setOnClickListener(this)
+            itemView.setOnClickListener(this)
         }
 
         override fun bindItem(movie: Movie) {
@@ -34,12 +34,16 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
                 .placeholder(R.drawable.movie_placeholder)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imagePoster)
         }
-        fun clearVew (){
+
+        fun clearView (){
             Glide.with(itemView.context).clear(imagePoster)
+        }
+
+        override fun onClick(v: View?) {
+            presenter.onMovieClicked(adapterPosition)
         }
     }
     
@@ -61,13 +65,13 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
 
     override fun onViewRecycled(holder: MovieViewHolder) {
         super.onViewRecycled(holder)
-        holder.clearVew()
+        holder.clearView()
     }
 
-    fun insertItems(movies: List<Movie>){
+    fun insertItems(movies: Movies){
         val count = this.itemCount
         presenter.setList(movies)
-        notifyItemRangeInserted(count, movies.size)
+        notifyItemRangeInserted(count, movies.results.size)
     }
 
 }

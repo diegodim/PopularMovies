@@ -2,7 +2,7 @@ package com.diego.duarte.popularmovieskotlin.movies
 
 import androidx.recyclerview.widget.GridLayoutManager
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
-import com.diego.duarte.popularmovieskotlin.data.model.Movie
+import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.movies.view.MovieItemView
 import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
 import io.reactivex.rxjava3.disposables.Disposable
@@ -11,46 +11,47 @@ import io.reactivex.rxjava3.observers.DisposableObserver
 class MoviesPresenter (private val model: MoviesModel, private val view: MoviesView) : BasePresenter() {
 
     private var navigation = 0
-    private var page: Int = 1
+    //private var page: Int = 1
     private var isLoading = false
-    private var movies: List<Movie> = ArrayList()
+    private var movies = Movies(1, ArrayList(), 0,0)
     private lateinit var getMovies: Disposable
 
-    val itemCount: Int get() = movies.size
+    val itemCount: Int get() = movies.results.size
 
 
     fun getPopularMovies() {
         navigation = 0
         isLoading = true
-        getMovies = model.getPopularMovies(page, MoviesListObserver())!!
+        getMovies = model.getPopularMovies(movies.page, MoviesListObserver())!!
     }
 
     fun getTopMovies() {
         navigation = 1
         isLoading = true
-        getMovies = model.getTopMovies(page, MoviesListObserver())!!
+        getMovies = model.getTopMovies(movies.page, MoviesListObserver())!!
     }
 
     fun firstPage(){
-        page = 1
-        movies = ArrayList()
+        movies = Movies(1, ArrayList(), 0,0)
         view.showLoadingDialog()
     }
 
     fun getNextMoviesPage(layoutManager: GridLayoutManager) {
 
-        if(!isLoading)
-        if (layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 11) {
-            page++
-            if(navigation == 0)
-                getPopularMovies()
-            if(navigation == 1)
-                getTopMovies()
-        }
+        if(!isLoading){
+                if (layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 11) {
+                    movies.page++
+                    if (navigation == 0)
+                        getPopularMovies()
+                    if (navigation == 1)
+                        getTopMovies()
+                }
+            }
     }
 
-    fun setList(listMovies: List<Movie>) {
-        movies = movies + listMovies
+    fun setList(listMovies: Movies) {
+        movies.results += listMovies.results
+        movies.page = listMovies.page
 
     }
 
@@ -65,16 +66,16 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
     }
 
     fun onMovieClicked(pos: Int) {
-        view.showMovie(movies[pos])
+        view.showMovie(movies.results[pos])
 
     }
 
     fun onBindItemView(itemView: MovieItemView, pos: Int) {
-        itemView.bindItem(movies[pos])
+        itemView.bindItem(movies.results[pos])
     }
 
-    inner class MoviesListObserver : DisposableObserver<List<Movie>>() {
-        override fun onNext(t: List<Movie>?) {
+    inner class MoviesListObserver : DisposableObserver<Movies>() {
+        override fun onNext(t: Movies?) {
 
             if (t != null) {
 

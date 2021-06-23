@@ -1,36 +1,37 @@
 package com.diego.duarte.popularmovieskotlin.movie
 
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
-import com.diego.duarte.popularmovieskotlin.data.model.Video
+import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieView
 import com.diego.duarte.popularmovieskotlin.movie.view.VideoItemView
+import io.reactivex.rxjava3.disposables.Disposable
 
 import io.reactivex.rxjava3.observers.DisposableObserver
 
 class MoviePresenter (private val model: MovieModel, private val view: MovieView) : BasePresenter(){
 
-    private var videos: List<Video> = ArrayList()
-
-    val itemCount: Int get() = videos.size
+    private var videos = Videos(0, ArrayList())
+    private lateinit var getVideos : Disposable
+    val itemCount: Int get() = videos.results.size
 
     fun showMovie()
     {
         view.showMovie(model.getMovieIntent())
-        model.getVideos(model.getMovieIntent().id, VideosListObserver())
+        getVideos = model.getVideos(model.getMovieIntent().id, VideosListObserver())!!
 
     }
 
-    fun setList(listVideos: List<Video>) {
-        videos = videos + listVideos
+    fun setList(listVideos: Videos) {
+        videos.results += listVideos.results
     }
 
     fun onBindItemView(itemView: VideoItemView, position: Int) {
-        itemView.bindItem(videos[position])
+        itemView.bindItem(videos.results[position])
     }
 
 
-    inner class VideosListObserver : DisposableObserver<List<Video>>() {
-        override fun onNext(t: List<Video>?) {
+    inner class VideosListObserver : DisposableObserver<Videos>() {
+        override fun onNext(t: Videos?) {
 
             if (t != null) {
 
@@ -59,5 +60,12 @@ class MoviePresenter (private val model: MovieModel, private val view: MovieView
 
     fun onTrailerClicked(position: Int) {
 
+        view.openVideo(videos.results[position])
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getVideos.dispose()
     }
 }

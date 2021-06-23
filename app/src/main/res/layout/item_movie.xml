@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_image_poster"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,5 +8,8 @@
     android:contentDescription="@string/content_image_poster"
     android:scaleType="fitXY"
     android:clickable="true"
-    android:focusable="true" />
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackgroundBorderless"/>
+
+
 

@@ -1,7 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.movie
 
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.data.model.Video
+import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
@@ -13,7 +13,7 @@ class MovieModel(private val repository: MoviesRepository, val movie: Movie) {
 
     fun getVideos(
         id: Int,
-        observer: DisposableObserver<List<Video>>
+        observer: DisposableObserver<Videos>
     ): @NonNull Disposable? {
 
         return repository.getMovieVideos(id)?.subscribeOn(Schedulers.io())
@@ -21,7 +21,7 @@ class MovieModel(private val repository: MoviesRepository, val movie: Movie) {
             ?.subscribe(
                 {
                     if (it.isSuccessful) {
-                        observer.onNext(it.body()!!.results)
+                        observer.onNext(it.body())
                     }
 
                 },          // onNext
