@@ -1,15 +1,10 @@
 package com.diego.duarte.popularmovieskotlin.movie
 
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
-import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Video
-import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieView
 import com.diego.duarte.popularmovieskotlin.movie.view.VideoItemView
-import com.diego.duarte.popularmovieskotlin.movie.view.VideosAdapter
-import com.diego.duarte.popularmovieskotlin.movies.MoviesModel
-import com.diego.duarte.popularmovieskotlin.movies.view.MovieItemView
-import com.diego.duarte.popularmovieskotlin.movies.view.MoviesView
+
 import io.reactivex.rxjava3.observers.DisposableObserver
 
 class MoviePresenter (private val model: MovieModel, private val view: MovieView) : BasePresenter(){
@@ -40,7 +35,7 @@ class MoviePresenter (private val model: MovieModel, private val view: MovieView
             if (t != null) {
 
                 view.showVideos(t)
-                view.hideLoadingDialog()
+
 
             }
 
@@ -51,7 +46,8 @@ class MoviePresenter (private val model: MovieModel, private val view: MovieView
         }
 
         override fun onComplete() {
-            TODO("Not yet implemented")
+
+            view.hideLoadingDialog()
         }
 
     }

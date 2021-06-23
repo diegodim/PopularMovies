@@ -22,6 +22,7 @@ class MoviesAdapter(private val presenter: MoviesPresenter) : RecyclerView.Adapt
 
         init {
             itemView.setOnClickListener {
+                itemView.requestFocus()
                 presenter.onMovieClicked(adapterPosition)
             }
         }

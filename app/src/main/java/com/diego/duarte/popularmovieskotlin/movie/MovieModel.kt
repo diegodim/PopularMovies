@@ -29,12 +29,15 @@ class MovieModel(private val repository: MoviesRepository, val movie: Movie) {
                     observer.onError(it)
                     println("Error:"+it.message.toString())
                 }, // onError
-                { println("Complete") }   // onComplete
+                {
+                    println("Complete")
+                    observer.onComplete()
+                }   // onComplete
             )
     }
 
     fun getMovieIntent(): Movie {
-        return movie;
+        return movie
     }
 
 
