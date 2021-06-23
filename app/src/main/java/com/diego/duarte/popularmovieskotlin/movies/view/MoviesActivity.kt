@@ -22,6 +22,9 @@ import javax.inject.Inject
 class MoviesActivity : AppCompatActivity(), MoviesView,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private var navigation = 0
+    private var page = 1
+    private var isLoading = false
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var bottomNavigation: BottomNavigationView
@@ -38,16 +41,22 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movies)
         setSupportActionBar(findViewById(R.id.movies_toolbar))
-        initializeRecyclerView()
         bottomNavigation = findViewById(R.id.movie_nav_view)
         bottomNavigation.setOnNavigationItemSelectedListener(this)
         viewError = findViewById(R.id.view_error_layout)
         viewLoading = findViewById(R.id.view_loading_layout)
         textError = findViewById(R.id.view_error_txt_cause)
         buttonError = findViewById(R.id.view_error_btn_retry)
-        buttonError.setOnClickListener { presenter.onRetryClicked() }
+        buttonError.setOnClickListener {
+            showLoadingDialog()
+            if(navigation == 0)
+                presenter.getPopularMovies(page)
+            if(navigation == 1)
+                presenter.getTopMovies(page)
+        }
+        initializeRecyclerView()
         showLoadingDialog()
-        presenter.getPopularMovies()
+        presenter.getPopularMovies(page)
     }
 
 
@@ -57,24 +66,35 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
         recyclerView = findViewById(R.id.movies_recycler)
         recyclerView.setHasFixedSize(true)
         recyclerView.recycledViewPool.clear()
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        val layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = layoutManager
         recyclerView.setItemViewCacheSize(4)
-        recyclerView.adapter = MoviesAdapter(presenter)
+        recyclerView.adapter = MoviesAdapter(this)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                presenter.getNextMoviesPage(recyclerView.layoutManager as GridLayoutManager)
+
+                if(!isLoading){
+                    if (layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 11) {
+                        page++
+                        isLoading = true
+                        if (navigation == 0)
+                            presenter.getPopularMovies(page )
+                        if (navigation == 1)
+                            presenter.getTopMovies(page)
+                    }
+                }
             }
         })
-
-
     }
 
-    override fun showLoadingDialog() {
+    private fun showLoadingDialog() {
+        isLoading = true
         viewLoading.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
         viewError.visibility = View.GONE
+
 
     }
 
@@ -95,31 +115,32 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
 
         val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
         adapter.insertItems(movies)
+        page = movies.page
+        isLoading = false
 
     }
 
-    override fun showMovie(movie: Movie) {
-        //Toast.makeText(this, movie.title, Toast.LENGTH_SHORT).show()
+    override fun onMovieClicked(movie: Movie) {
         val intent = Intent(this, MovieActivity::class.java)
         intent.putExtra(MovieActivity.INTENT_EXTRA_MOVIE, movie)
         startActivity(intent)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        page = 1
+        recyclerView.adapter = MoviesAdapter(this)
+        showLoadingDialog()
         when (item.itemId) {
             R.id.most_popular -> {
-
-                presenter.firstPage()
-                bottomNavigation.menu.getItem(2).isChecked = true
-                initializeRecyclerView()
-                presenter.getPopularMovies()
+                navigation = 0
+                bottomNavigation.menu.getItem(navigation).isChecked = true
+                presenter.getPopularMovies(page)
 
             }
             R.id.top_rated -> {
-                presenter.firstPage()
-                bottomNavigation.menu.getItem(1).isChecked = true
-                initializeRecyclerView()
-                presenter.getTopMovies()
+                navigation = 1
+                bottomNavigation.menu.getItem(navigation).isChecked = true
+                presenter.getTopMovies(page)
 
             }
             else -> return false

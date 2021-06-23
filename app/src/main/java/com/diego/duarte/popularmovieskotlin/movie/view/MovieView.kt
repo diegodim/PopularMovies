@@ -10,5 +10,5 @@ interface MovieView {
     fun showError(message: String)
     fun showMovie(movie: Movie)
     fun showVideos(videos: Videos)
-    fun openVideo(video: Video)
+    fun onTrailerClicked(video: Video)
 }

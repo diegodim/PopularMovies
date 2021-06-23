@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
@@ -29,6 +28,7 @@ import dagger.android.AndroidInjection
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class MovieActivity : AppCompatActivity(), MovieView {
@@ -83,8 +83,9 @@ class MovieActivity : AppCompatActivity(), MovieView {
         viewLoading = findViewById(R.id.view_loading_layout)
         textError = findViewById(R.id.view_error_txt_cause)
         buttonError = findViewById(R.id.view_error_btn_retry)
-        buttonError.setOnClickListener { presenter.onRetryClicked() }
-        showLoadingDialog()
+        buttonError.setOnClickListener {
+            presenter.showMovie()
+        }
         presenter.showMovie()
 
     }
@@ -98,7 +99,7 @@ class MovieActivity : AppCompatActivity(), MovieView {
         recyclerView.setItemViewCacheSize(2)
         val layoutManager= LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = VideosAdapter(presenter)
+        recyclerView.adapter = VideosAdapter(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.isNestedScrollingEnabled = false
 
@@ -159,13 +160,15 @@ class MovieActivity : AppCompatActivity(), MovieView {
     }
 
     override fun showVideos(videos: Videos) {
-        //println("key:"+videos[0].key)
-        //Toast.makeText(this, videos.results[0].key, Toast.LENGTH_SHORT).show()
         val adapter: VideosAdapter = recyclerView.adapter as VideosAdapter
         adapter.insertItems(videos)
     }
 
-    override fun openVideo(video: Video) {
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+    override fun onTrailerClicked(video: Video) {
         val playVideoIntent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(getString(R.string.url_youtube_video) + video.key)

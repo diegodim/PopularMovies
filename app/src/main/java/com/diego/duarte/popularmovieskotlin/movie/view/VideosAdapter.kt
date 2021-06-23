@@ -7,18 +7,17 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
-import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 
-class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
+class VideosAdapter(val view: MovieView): RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
 
+    private var videos: List<Video> = ArrayList()
 
-    inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), VideoItemView,
+    inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
 
         private val imageThumbnail: ImageView = itemView.findViewById(R.id.video_image_thumbnail)
@@ -28,7 +27,7 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
             imageThumbnail.setOnClickListener(this)
         }
 
-        override fun bindItem(video: Video) {
+        fun bindItem(video: Video) {
             Glide
                 .with(itemView.context)
                 .load(itemView.context.getString(R.string.url_youtube_thumbnail,video.key))
@@ -43,7 +42,7 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
         }
 
         override fun onClick(v: View?) {
-            presenter.onTrailerClicked(adapterPosition)
+            view.onTrailerClicked(videos[adapterPosition])
         }
     }
 
@@ -55,12 +54,12 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        presenter.onBindItemView(holder, position)
+        holder.bindItem(videos[position])
 
     }
 
     override fun getItemCount(): Int {
-        return presenter.itemCount
+        return videos.size
     }
 
     override fun onViewRecycled(holder: VideoViewHolder) {
@@ -68,8 +67,8 @@ class VideosAdapter(val presenter: MoviePresenter): RecyclerView.Adapter<VideosA
         holder.clearVew()
     }
 
-    fun insertItems(videos: Videos){
-        presenter.setList(videos)
+    fun insertItems(listVideos: Videos){
+        videos = videos + listVideos.results
         notifyDataSetChanged()
     }
 }
