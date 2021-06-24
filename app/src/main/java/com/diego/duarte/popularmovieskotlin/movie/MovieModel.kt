@@ -36,6 +36,24 @@ class MovieModel(private val repository: MoviesRepository, val movie: Movie) {
             )
     }
 
+    fun setFavoriteMovie(movie: Movie, observer: DisposableObserver<Boolean>):
+            @NonNull Disposable? {
+        return repository.saveMovieAsFavorite(movie)?.subscribeOn(AndroidSchedulers.mainThread())
+            ?.observeOn(AndroidSchedulers.mainThread())?.subscribe(
+                {
+
+                    observer.onNext(it)},          // onNext
+                {
+                    observer.onError(it)
+
+                }, // onError
+                {
+
+                    observer.onComplete()
+                }   // onComplete)
+            )
+    }
+
     fun getMovieIntent(): Movie {
         return movie
     }

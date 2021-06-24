@@ -68,9 +68,9 @@ class MoviesAdapter(private val moviesView: MoviesView) : RecyclerView.Adapter<M
         holder.clearView()
     }
 
-    fun insertItems(listMovies: Movies){
+    fun insertItems(listMovies: List<Movie>){
         val count = itemCount
-        movies = movies + listMovies.results
+        movies = movies + listMovies
         notifyItemRangeInserted(count, movies.size)
     }
 

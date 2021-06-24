@@ -6,6 +6,6 @@ import com.diego.duarte.popularmovieskotlin.data.model.Movies
 interface MoviesView {
     fun hideLoadingDialog()
     fun showError(message: String)
-    fun showMovies(movies: Movies)
+    fun showMovies(movies: List<Movie>)
     fun onMovieClicked(movie: Movie)
 }

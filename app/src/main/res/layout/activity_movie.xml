@@ -57,12 +57,13 @@
         android:layout_width="match_parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/movie_fb_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
+        android:contentDescription="@string/content_fb_favorite"
         app:layout_anchor="@id/movie_app_bar"
-        app:layout_anchorGravity="right|bottom"
-        android:contentDescription="@string/content_fb_favorite" />
+        app:layout_anchorGravity="right|bottom" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/movie_layout"

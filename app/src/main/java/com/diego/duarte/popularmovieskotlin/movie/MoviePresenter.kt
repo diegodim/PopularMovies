@@ -1,6 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.movie
 
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
+import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieView
 import io.reactivex.rxjava3.disposables.Disposable
@@ -15,8 +16,29 @@ class MoviePresenter (private val model: MovieModel, private val view: MovieView
     {
         view.showLoadingDialog()
         view.showMovie(model.getMovieIntent())
-        disposable = model.getVideos(model.getMovieIntent().id, VideosListObserver())!!
+        disposable = model.getVideos(model.getMovieIntent().id!!, VideosListObserver())!!
         this.addDisposable(disposable)
+
+    }
+
+    fun setFavorite(){
+        disposable = model.setFavoriteMovie(model.getMovieIntent(), MovieSaveObserver())!!
+        this.addDisposable(disposable)
+    }
+
+    inner class MovieSaveObserver: DisposableObserver<Boolean>(){
+        override fun onNext(t: Boolean?) {
+            println("Success:" + t.toString())
+        }
+
+        override fun onError(e: Throwable?) {
+            println("Error"+ e?.message.toString())
+
+        }
+
+        override fun onComplete() {
+            println("Complete")
+        }
 
     }
 
@@ -40,9 +62,4 @@ class MoviePresenter (private val model: MovieModel, private val view: MovieView
 
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposable.dispose()
-    }
 }

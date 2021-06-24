@@ -23,6 +23,7 @@ import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -46,6 +47,8 @@ class MovieActivity : BaseActivity(), MovieView {
     private lateinit var textScore: TextView
     private lateinit var textVotes: TextView
     private lateinit var rateScore: RatingBar
+    private lateinit var buttonFavorite: FloatingActionButton
+
     private lateinit var appBar: AppBarLayout
     private lateinit var layout: NestedScrollView
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
@@ -68,7 +71,8 @@ class MovieActivity : BaseActivity(), MovieView {
         textScore = findViewById(R.id.movie_text_rating_score)
         textVotes = findViewById(R.id.movie_text_total_votes)
         rateScore = findViewById(R.id.movie_rating_score)
-
+        buttonFavorite = findViewById(R.id.movie_fb_favorite)
+        buttonFavorite.setOnClickListener { presenter.setFavorite() }
         layout = findViewById(R.id.movie_layout)
         appBar = findViewById(R.id.movie_app_bar)
 
@@ -141,7 +145,7 @@ class MovieActivity : BaseActivity(), MovieView {
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imagePoster)
-        rateScore.rating = movie.vote_average/2
+        rateScore.rating = movie.vote_average!!/2
         textSynopsis.text = movie.overview
         collapsingToolbarLayout.title = movie.title
         textTitle.text = movie.title
@@ -149,7 +153,7 @@ class MovieActivity : BaseActivity(), MovieView {
         textVotes.text = movie.vote_count.toString()
         if(movie.release_date != null)
         textDate.text = SimpleDateFormat("dd/MM/yyyy", Locale("pt-br", "America/Sao_Paulo"))
-            .format(movie.release_date)
+            .format(movie.release_date!!)
     }
 
     override fun showVideos(videos: Videos) {
@@ -174,8 +178,9 @@ class MovieActivity : BaseActivity(), MovieView {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         presenter.onDestroy()
+        cacheDir.deleteRecursively()
+        super.onDestroy()
     }
 
 }

@@ -107,11 +107,10 @@ class MoviesActivity : BaseActivity(), MoviesView,
 
     }
 
-    override fun showMovies(movies: Movies) {
+    override fun showMovies(movies: List<Movie>) {
 
         val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
         adapter.insertItems(movies)
-        page = movies.page
         isLoading = false
 
     }
@@ -139,14 +138,21 @@ class MoviesActivity : BaseActivity(), MoviesView,
                 presenter.getTopMovies(page)
 
             }
+            R.id.favorite -> {
+                navigation = 2
+                bottomNavigation.menu.getItem(navigation).isChecked = true
+                presenter.getFavoriteMovies()
+
+            }
             else -> return false
         }
         return true
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         presenter.onDestroy()
+        cacheDir.deleteRecursively()
+        super.onDestroy()
     }
 
 }

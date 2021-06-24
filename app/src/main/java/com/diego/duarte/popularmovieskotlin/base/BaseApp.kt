@@ -4,6 +4,7 @@ import com.diego.duarte.popularmovieskotlin.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class BaseApp: DaggerApplication() {
 
@@ -14,10 +15,17 @@ class BaseApp: DaggerApplication() {
     }
 
     override fun onCreate() {
-        Realm.init(this)
+
         injector = DaggerAppComponent.builder().application(this).build()
+        Realm.init(this)
+        buildRealm()
         super.onCreate()
+    }
 
-
+    fun buildRealm() {
+        val config =  RealmConfiguration.Builder()
+            .name("movies.realm")
+            .build()
+        Realm.getInstance(config);
     }
 }
