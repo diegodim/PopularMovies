@@ -161,7 +161,7 @@ class MovieActivity : BaseActivity(), MovieView {
         onBackPressed()
         return true
     }
-    override fun onTrailerClicked(video: Video) {
+    override fun onVideoClicked(video: Video) {
         val playVideoIntent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(getString(R.string.url_youtube_video) + video.key)

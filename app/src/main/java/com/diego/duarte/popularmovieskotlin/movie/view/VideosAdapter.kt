@@ -42,7 +42,7 @@ class VideosAdapter(val view: MovieView): RecyclerView.Adapter<VideosAdapter.Vid
         }
 
         override fun onClick(v: View?) {
-            view.onTrailerClicked(videos[adapterPosition])
+            view.onVideoClicked(videos[adapterPosition])
         }
     }
 

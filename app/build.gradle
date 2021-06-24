@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'realm-android'
 }
 
 
@@ -35,6 +36,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -42,6 +47,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+}
+
+realm {
+    syncEnabled = true
 }
 
 dependencies {
@@ -85,4 +94,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    //Database
+
 }

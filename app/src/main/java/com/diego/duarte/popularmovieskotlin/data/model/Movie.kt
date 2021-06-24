@@ -1,9 +1,8 @@
 package com.diego.duarte.popularmovieskotlin.data.model
 
-import android.os.Parcel
 import android.os.Parcelable
+import io.realm.RealmObject
 import kotlinx.android.parcel.Parcelize
-import java.io.Serializable
 import java.util.*
 
 @Parcelize
@@ -16,5 +15,5 @@ data class Movie(
     val backdrop_path: String?,
     val vote_average: Float,
     val vote_count: Int,
-    ): Parcelable
+    ): Parcelable, RealmObject()
 
