@@ -5,11 +5,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,20 +16,19 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
+import com.diego.duarte.popularmovieskotlin.base.BaseActivity
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import dagger.android.AndroidInjection
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
-class MovieActivity : AppCompatActivity(), MovieView {
+class MovieActivity : BaseActivity(), MovieView {
 
     companion object {
         const val INTENT_EXTRA_MOVIE = "user_movie"
@@ -49,18 +46,13 @@ class MovieActivity : AppCompatActivity(), MovieView {
     private lateinit var textScore: TextView
     private lateinit var textVotes: TextView
     private lateinit var rateScore: RatingBar
-    private lateinit var viewError: View
-    private lateinit var viewLoading: View
-    private lateinit var buttonError: Button
-    private lateinit var textError: TextView
     private lateinit var appBar: AppBarLayout
     private lateinit var layout: NestedScrollView
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie)
+
         setSupportActionBar(findViewById(R.id.movie_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -79,15 +71,17 @@ class MovieActivity : AppCompatActivity(), MovieView {
 
         layout = findViewById(R.id.movie_layout)
         appBar = findViewById(R.id.movie_app_bar)
-        viewError = findViewById(R.id.view_error_layout)
-        viewLoading = findViewById(R.id.view_loading_layout)
-        textError = findViewById(R.id.view_error_txt_cause)
-        buttonError = findViewById(R.id.view_error_btn_retry)
-        buttonError.setOnClickListener {
-            presenter.showMovie()
-        }
+
         presenter.showMovie()
 
+    }
+
+    override fun retryClick() {
+        presenter.showMovie()
+    }
+
+    override fun getContent(): Int {
+        return R.layout.activity_movie
     }
 
     private fun initializeRecyclerView() {
@@ -106,28 +100,27 @@ class MovieActivity : AppCompatActivity(), MovieView {
     }
 
     override fun showLoadingDialog() {
-        viewLoading.visibility = View.VISIBLE
+
         appBar.setExpanded(false, false)
         appBar.isActivated = false
         layout.visibility = View.GONE
-        viewError.visibility = View.GONE
+        showLoading()
     }
 
     override fun hideLoadingDialog() {
-        viewLoading.visibility = View.GONE
+        hideLoading()
         appBar.setExpanded(true, false)
         appBar.isActivated = true
         layout.visibility = View.VISIBLE
-        viewError.visibility = View.GONE
+
     }
 
     override fun showError(message: String) {
-        viewLoading.visibility = View.GONE
+
         appBar.setExpanded(false, false)
         appBar.isActivated = true
         layout.visibility = View.GONE
-        viewError.visibility = View.VISIBLE
-        textError.text = message
+        onError(message)
     }
 
     override fun showMovie(movie: Movie) {
@@ -178,6 +171,11 @@ class MovieActivity : AppCompatActivity(), MovieView {
         if (playVideoIntent.resolveActivity(packageManager) != null) {
             startActivity(chooser)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
 }

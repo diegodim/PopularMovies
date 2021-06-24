@@ -19,16 +19,8 @@ class MoviesModel(private val repository: MoviesRepository){
         return repository.getMoviesByPopularity(page)?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(
-                {
-                    if (it.isSuccessful) {
-
-                        observer.onNext(it.body())
-                    }
-
-                },          // onNext
-                {
-                    observer.onError(it)
-                }, // onError
+                { if (it.isSuccessful)  observer.onNext(it.body())  }, // onNext
+                { observer.onError(it) }, // onError
                 { println("Complete") }   // onComplete
             )
     }
@@ -39,16 +31,8 @@ class MoviesModel(private val repository: MoviesRepository){
         return repository.getMoviesByRating(page)?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(
-                {
-                    if (it.isSuccessful) {
-
-                        observer.onNext(it.body())
-                    }
-
-                },          // onNext
-                {
-                    observer.onError(it)
-                }, // onError
+                {if (it.isSuccessful) observer.onNext(it.body()) },// onNext
+                {observer.onError(it) }, // onError
                 { println("Complete") }   // onComplete
             )
 

@@ -4,22 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
+import com.diego.duarte.popularmovieskotlin.base.BaseActivity
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 
-class MoviesActivity : AppCompatActivity(), MoviesView,
+class MoviesActivity : BaseActivity(), MoviesView,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var navigation = 0
@@ -28,35 +25,34 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var viewError: View
-    private lateinit var viewLoading: View
-    private lateinit var buttonError: Button
-    private lateinit var textError: TextView
+
 
     @Inject
     lateinit var presenter: MoviesPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movies)
+        //setContentView(R.layout.activity_movies)
+
         setSupportActionBar(findViewById(R.id.movies_toolbar))
         bottomNavigation = findViewById(R.id.movie_nav_view)
         bottomNavigation.setOnNavigationItemSelectedListener(this)
-        viewError = findViewById(R.id.view_error_layout)
-        viewLoading = findViewById(R.id.view_loading_layout)
-        textError = findViewById(R.id.view_error_txt_cause)
-        buttonError = findViewById(R.id.view_error_btn_retry)
-        buttonError.setOnClickListener {
-            showLoadingDialog()
-            if(navigation == 0)
-                presenter.getPopularMovies(page)
-            if(navigation == 1)
-                presenter.getTopMovies(page)
-        }
+
         initializeRecyclerView()
         showLoadingDialog()
         presenter.getPopularMovies(page)
+    }
+
+    override fun retryClick() {
+        showLoadingDialog()
+        if(navigation == 0)
+            presenter.getPopularMovies(page)
+        if(navigation == 1)
+            presenter.getTopMovies(page)
+    }
+
+    override fun getContent(): Int {
+        return R.layout.activity_movies
     }
 
 
@@ -91,24 +87,24 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
 
     private fun showLoadingDialog() {
         isLoading = true
-        viewLoading.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
-        viewError.visibility = View.GONE
+        showLoading()
+
 
 
     }
 
     override fun hideLoadingDialog() {
-        viewLoading.visibility = View.GONE
+        hideLoading()
         recyclerView.visibility = View.VISIBLE
-        viewError.visibility = View.GONE
+
     }
 
     override fun showError(message: String) {
-        viewLoading.visibility = View.GONE
+
         recyclerView.visibility = View.GONE
-        viewError.visibility = View.VISIBLE
-        textError.text = message
+        onError(message)
+
     }
 
     override fun showMovies(movies: Movies) {
@@ -148,13 +144,9 @@ class MoviesActivity : AppCompatActivity(), MoviesView,
         return true
     }
 
-
-
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
     }
-
-
 
 }

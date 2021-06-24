@@ -171,6 +171,7 @@
                 android:layout_margin="@dimen/spacing_small"
                 android:elevation="@dimen/spacing_tiny"
                 app:cardCornerRadius="@dimen/spacing_tiny"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/movie_rv_videos">

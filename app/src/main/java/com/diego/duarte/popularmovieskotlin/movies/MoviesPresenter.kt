@@ -9,18 +9,20 @@ import io.reactivex.rxjava3.observers.DisposableObserver
 class MoviesPresenter (private val model: MoviesModel, private val view: MoviesView) : BasePresenter() {
 
 
-    private lateinit var getMovies: Disposable
+    private lateinit var disposable: Disposable
 
 
 
     fun getPopularMovies(page: Int) {
         //view.showLoadingDialog()
-        getMovies = model.getPopularMovies(page, MoviesListObserver())!!
+        disposable = model.getPopularMovies(page, MoviesListObserver())!!
+        this.addDisposable(disposable)
     }
 
     fun getTopMovies(page: Int) {
         //view.showLoadingDialog()
-        getMovies = model.getTopMovies(page, MoviesListObserver())!!
+        disposable = model.getTopMovies(page, MoviesListObserver())!!
+        this.addDisposable(disposable)
     }
 
 
@@ -46,9 +48,5 @@ class MoviesPresenter (private val model: MoviesModel, private val view: MoviesV
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        getMovies.dispose()
-    }
 
 }
