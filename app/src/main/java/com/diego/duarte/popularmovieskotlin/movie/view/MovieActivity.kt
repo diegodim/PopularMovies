@@ -179,7 +179,7 @@ class MovieActivity : BaseActivity(), MovieView {
 
     override fun onDestroy() {
         presenter.onDestroy()
-        cacheDir.deleteRecursively()
+        //cacheDir.deleteRecursively()
         super.onDestroy()
     }
 

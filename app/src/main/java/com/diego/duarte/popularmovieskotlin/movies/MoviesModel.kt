@@ -28,7 +28,8 @@ class MoviesModel(private val repository: MoviesRepository){
             )
     }
 
-    fun getTopMovies(page: Int, observer: DisposableObserver<Movies>): @NonNull Disposable? {
+    fun getTopMovies(page: Int, observer: DisposableObserver<Movies>):
+            @NonNull Disposable? {
 
 
         return repository.getMoviesByRating(page)?.subscribeOn(Schedulers.io())
@@ -41,8 +42,8 @@ class MoviesModel(private val repository: MoviesRepository){
 
     }
 
-    fun getFavoriteMovies( observer: DisposableObserver<RealmResults<Movie>>): @NonNull Disposable? {
-
+    fun getFavoriteMovies( observer: DisposableObserver<RealmResults<Movie>>):
+            @NonNull Disposable? {
 
         return repository.getMoviesByFavorite()
             .subscribeOn(AndroidSchedulers.mainThread())

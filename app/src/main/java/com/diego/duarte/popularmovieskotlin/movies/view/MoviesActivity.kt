@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.base.BaseActivity
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -79,6 +78,8 @@ class MoviesActivity : BaseActivity(), MoviesView,
                             presenter.getPopularMovies(page )
                         if (navigation == 1)
                             presenter.getTopMovies(page)
+                        else
+                            return
                     }
                 }
             }
