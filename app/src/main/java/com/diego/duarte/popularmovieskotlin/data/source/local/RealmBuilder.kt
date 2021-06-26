@@ -9,7 +9,7 @@ import io.realm.RealmResults
 class RealmBuilder {
 
     fun getFavoritesMovies(): Observable<RealmResults<Movie>>{
-        //TODO
+
         return Observable.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val results = realm.where(Movie::class.java).findAllAsync()
@@ -21,7 +21,7 @@ class RealmBuilder {
     }
 
     fun saveFavoriteMovie(movie: Movie): Observable<Boolean>{
-        //TODO
+
         return Observable.create{ emitter ->
             val realm = Realm.getDefaultInstance()
             realm.beginTransaction()

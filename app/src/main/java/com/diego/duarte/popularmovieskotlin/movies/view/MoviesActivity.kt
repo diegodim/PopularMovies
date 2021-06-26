@@ -8,26 +8,32 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.base.BaseActivity
+import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
+import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import javax.inject.Inject
 
 
-class MoviesActivity : BaseActivity(), MoviesView,
+class MoviesActivity : BaseActivity(), MoviesContract.View,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var navigation = 0
     private var page = 1
     private var isLoading = false
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var bottomNavigation: BottomNavigationView
 
+    companion object {
+        const val INTENT_MOVIES_LIST = "movies_list"
+        const val INTENT_NAVIGATION = "navigation"
+        const val INTENT_MOVIES_PAGE = "page"
+    }
 
     @Inject
-    lateinit var presenter: MoviesPresenter
+    lateinit var presenter: MoviesContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +42,21 @@ class MoviesActivity : BaseActivity(), MoviesView,
         setSupportActionBar(findViewById(R.id.movies_toolbar))
         bottomNavigation = findViewById(R.id.movie_nav_view)
         bottomNavigation.setOnNavigationItemSelectedListener(this)
-
         initializeRecyclerView()
-        showLoadingDialog()
-        presenter.getPopularMovies(page)
+
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            val adapter: MoviesAdapter = recyclerView.adapter as MoviesAdapter
+            adapter.insertItems(savedInstanceState.getParcelableArrayList(INTENT_MOVIES_LIST)!!)
+            navigation = savedInstanceState.getInt(INTENT_NAVIGATION)
+            page = savedInstanceState.getInt(INTENT_MOVIES_PAGE)
+            hideLoadingDialog()
+
+        }
+        else {
+            showLoadingDialog()
+            presenter.getPopularMovies(page)
+        }
     }
 
     override fun retryClick() {
@@ -48,10 +65,16 @@ class MoviesActivity : BaseActivity(), MoviesView,
             presenter.getPopularMovies(page)
         if(navigation == 1)
             presenter.getTopMovies(page)
+        if(navigation == 2)
+            presenter.getFavoriteMovies()
     }
 
     override fun getContent(): Int {
         return R.layout.activity_movies
+    }
+
+    override fun getPresenter(): BasePresenter {
+        return presenter as MoviesPresenter
     }
 
 
@@ -64,22 +87,23 @@ class MoviesActivity : BaseActivity(), MoviesView,
         val layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = layoutManager
         recyclerView.setItemViewCacheSize(4)
+
         recyclerView.adapter = MoviesAdapter(this)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
-                if(!isLoading){
-                    if (layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 11) {
-                        page++
+                if(!isLoading) {
+                    if (layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 11) {
                         isLoading = true
+                        page++
                         if (navigation == 0)
-                            presenter.getPopularMovies(page )
+                            presenter.getPopularMovies(page)
                         if (navigation == 1)
                             presenter.getTopMovies(page)
                         else
                             return
+
                     }
                 }
             }
@@ -123,24 +147,27 @@ class MoviesActivity : BaseActivity(), MoviesView,
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        page = 1
+
         recyclerView.adapter = MoviesAdapter(this)
         showLoadingDialog()
         when (item.itemId) {
             R.id.most_popular -> {
                 navigation = 0
+                page = 1
                 bottomNavigation.menu.getItem(navigation).isChecked = true
                 presenter.getPopularMovies(page)
 
             }
             R.id.top_rated -> {
                 navigation = 1
+                page = 1
                 bottomNavigation.menu.getItem(navigation).isChecked = true
                 presenter.getTopMovies(page)
 
             }
             R.id.favorite -> {
                 navigation = 2
+                page = 1
                 bottomNavigation.menu.getItem(navigation).isChecked = true
                 presenter.getFavoriteMovies()
 
@@ -150,10 +177,12 @@ class MoviesActivity : BaseActivity(), MoviesView,
         return true
     }
 
-    override fun onDestroy() {
-        presenter.onDestroy()
-        cacheDir.deleteRecursively()
-        super.onDestroy()
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(INTENT_MOVIES_LIST,
+            ArrayList((recyclerView.adapter as MoviesAdapter).getList()))
+        outState.putInt(INTENT_MOVIES_PAGE, page)
+        outState.putInt(INTENT_NAVIGATION, navigation)
+        super.onSaveInstanceState(outState)
     }
 
 }

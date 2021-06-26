@@ -22,10 +22,10 @@ class BaseApp: DaggerApplication() {
         super.onCreate()
     }
 
-    fun buildRealm() {
+    private fun buildRealm() {
         val config =  RealmConfiguration.Builder()
             .name("movies.realm")
             .build()
-        Realm.getInstance(config);
+        Realm.getInstance(config)
     }
 }

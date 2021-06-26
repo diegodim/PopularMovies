@@ -13,12 +13,10 @@
         android:supportsRtl="true">
         <activity
             android:name=".movie.view.MovieActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.PopularMoviesKotlin.NoActionBar"
             android:launchMode = "singleTop"/>
         <activity
             android:name=".movies.view.MoviesActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.PopularMoviesKotlin.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

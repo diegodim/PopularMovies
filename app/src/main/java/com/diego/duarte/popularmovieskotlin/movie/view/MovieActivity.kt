@@ -17,26 +17,27 @@ import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.base.BaseActivity
+import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
+import com.diego.duarte.popularmovieskotlin.movie.MovieContract
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
+import com.diego.duarte.popularmovieskotlin.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 
-class MovieActivity : BaseActivity(), MovieView {
+class MovieActivity : BaseActivity(), MovieContract.View {
 
     companion object {
-        const val INTENT_EXTRA_MOVIE = "user_movie"
+        const val INTENT_EXTRA_MOVIE = "movie"
     }
 
     @Inject
-    lateinit var presenter: MoviePresenter
+    lateinit var presenter: MovieContract.Presenter
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageBackdrop: ImageView
@@ -76,16 +77,20 @@ class MovieActivity : BaseActivity(), MovieView {
         layout = findViewById(R.id.movie_layout)
         appBar = findViewById(R.id.movie_app_bar)
 
-        presenter.showMovie()
+        presenter.getMovie()
 
     }
 
     override fun retryClick() {
-        presenter.showMovie()
+        presenter.getMovie()
     }
 
     override fun getContent(): Int {
         return R.layout.activity_movie
+    }
+
+    override fun getPresenter(): BasePresenter {
+        return presenter as MoviePresenter
     }
 
     private fun initializeRecyclerView() {
@@ -145,15 +150,13 @@ class MovieActivity : BaseActivity(), MovieView {
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imagePoster)
-        rateScore.rating = movie.vote_average!!/2
+        rateScore.rating = (movie.vote_average!! / 2)
         textSynopsis.text = movie.overview
         collapsingToolbarLayout.title = movie.title
         textTitle.text = movie.title
         textScore.text = movie.vote_average.toString()
         textVotes.text = movie.vote_count.toString()
-        if(movie.release_date != null)
-        textDate.text = SimpleDateFormat("dd/MM/yyyy", Locale("pt-br", "America/Sao_Paulo"))
-            .format(movie.release_date!!)
+        textDate.text = Util().formateDate(movie.release_date!!)
     }
 
     override fun showVideos(videos: Videos) {
@@ -175,12 +178,6 @@ class MovieActivity : BaseActivity(), MovieView {
         if (playVideoIntent.resolveActivity(packageManager) != null) {
             startActivity(chooser)
         }
-    }
-
-    override fun onDestroy() {
-        presenter.onDestroy()
-        //cacheDir.deleteRecursively()
-        super.onDestroy()
     }
 
 }

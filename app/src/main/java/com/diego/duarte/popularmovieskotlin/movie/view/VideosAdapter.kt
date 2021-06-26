@@ -12,8 +12,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
+import com.diego.duarte.popularmovieskotlin.movie.MovieContract
 
-class VideosAdapter(val view: MovieView): RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
+class VideosAdapter(val view: MovieContract.View): RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
 
     private var videos: List<Video> = ArrayList()
 

@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.diego.duarte.popularmovieskotlin.R
 import dagger.android.AndroidInjection
+import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity: AppCompatActivity() {
+abstract class BaseActivity: DaggerAppCompatActivity() {
 
     private lateinit var viewError: View
     private lateinit var viewLoading: View
     private lateinit var buttonError: Button
     private lateinit var textError: TextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -47,5 +50,13 @@ abstract class BaseActivity: AppCompatActivity() {
     abstract fun retryClick()
 
     abstract fun getContent(): Int
+
+    abstract fun getPresenter(): BasePresenter
+
+    override fun onDestroy() {
+        getPresenter().onDestroy()
+        cacheDir.deleteRecursively()
+        super.onDestroy()
+    }
 
 }

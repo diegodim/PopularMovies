@@ -11,9 +11,9 @@ import com.bumptech.glide.load.resource.bitmap.Downsampler
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.data.model.Movies
+import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
 
-class MoviesAdapter(private val moviesView: MoviesView) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class MoviesAdapter(private val moviesView: MoviesContract.View) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     private var movies : List<Movie> = ArrayList()
 
@@ -73,5 +73,7 @@ class MoviesAdapter(private val moviesView: MoviesView) : RecyclerView.Adapter<M
         movies = movies + listMovies
         notifyItemRangeInserted(count, movies.size)
     }
+
+    fun getList(): List<Movie> = movies
 
 }
