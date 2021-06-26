@@ -2,6 +2,7 @@ package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
+import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import com.diego.duarte.popularmovieskotlin.di.scope.MovieScope
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
@@ -29,6 +30,6 @@ class MovieModule {
 
     @MovieScope
     @Provides
-    fun providePresenter(repository: MoviesRepository, movie: Movie, view: MovieContract.View)
+    fun providePresenter(repository: Repository, movie: Movie, view: MovieContract.View)
     = MoviePresenter(repository, movie, view) as MovieContract.Presenter
 }

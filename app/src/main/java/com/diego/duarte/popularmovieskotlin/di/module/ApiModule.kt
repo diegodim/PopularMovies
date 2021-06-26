@@ -1,6 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
+import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,5 +11,5 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideMoviesClient(): MoviesRepository = MoviesRepository()
+    fun provideMoviesRepository() = MoviesRepository() as Repository
 }

@@ -5,10 +5,11 @@ import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
+import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class MoviePresenter (private val repository: MoviesRepository,
+class MoviePresenter (private val repository: Repository,
                       val movie: Movie, private
                       val view: MovieContract.View) : BasePresenter(), MovieContract.Presenter{
 

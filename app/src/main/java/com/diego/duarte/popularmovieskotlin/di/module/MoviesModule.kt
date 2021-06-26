@@ -1,6 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
+import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import com.diego.duarte.popularmovieskotlin.di.scope.MoviesScope
 import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
@@ -17,7 +18,7 @@ class MoviesModule {
 
     @MoviesScope
     @Provides
-    fun providePresenter(repository: MoviesRepository, view: MoviesContract.View)
+    fun providePresenter(repository: Repository, view: MoviesContract.View)
     = MoviesPresenter(repository, view) as MoviesContract.Presenter
 
 }

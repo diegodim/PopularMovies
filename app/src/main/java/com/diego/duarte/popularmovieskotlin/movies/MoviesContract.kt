@@ -11,8 +11,10 @@ interface MoviesContract {
         fun onMovieClicked(movie: Movie)
     }
     interface Presenter{
+        fun onCreate()
         fun getPopularMovies(page: Int)
         fun getTopMovies(page: Int)
         fun getFavoriteMovies()
+        fun loadNextPage(navigation: Int, page: Int): Int
     }
 }
