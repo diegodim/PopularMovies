@@ -156,7 +156,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         textTitle.text = movie.title
         textScore.text = movie.vote_average.toString()
         textVotes.text = movie.vote_count.toString()
-        textDate.text = Util().formateDate(movie.release_date!!)
+        textDate.text = Util().formateDate(movie.release_date)
     }
 
     override fun showVideos(videos: Videos) {
