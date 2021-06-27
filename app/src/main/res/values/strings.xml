@@ -15,6 +15,8 @@
     <string name="content_image_backdrop">Image backdrop</string>
     <string name="content_fb_favorite">Movie favorite</string>
     <string name="content_image_no_connection">No connectio</string>
+    <string name="content_video_thumbnail">Video thumbnail</string>
+    <string name="content_video_playback_icon">Video playback icon</string>
 
     <string name="title_synopsis">Sinopse</string>
     <string name="title_reviews">Reviews</string>

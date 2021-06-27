@@ -14,7 +14,8 @@ import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.movie.MovieContract
 
-class VideosAdapter(val view: MovieContract.View): RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
+class VideosAdapter(val view: MovieContract.View):
+    RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
 
     private var videos: List<Video> = ArrayList()
 
@@ -38,6 +39,7 @@ class VideosAdapter(val view: MovieContract.View): RecyclerView.Adapter<VideosAd
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageThumbnail)
         }
+
         fun clearVew (){
             Glide.with(itemView.context).clear(imageThumbnail)
         }
@@ -50,7 +52,8 @@ class VideosAdapter(val view: MovieContract.View): RecyclerView.Adapter<VideosAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_video, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_video, parent, false)
         return VideoViewHolder(view)
     }
 

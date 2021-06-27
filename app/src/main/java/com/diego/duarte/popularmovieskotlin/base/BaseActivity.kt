@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.diego.duarte.popularmovieskotlin.R
 import dagger.android.AndroidInjection
-import dagger.android.DaggerActivity
 import dagger.android.support.DaggerAppCompatActivity
 
 abstract class BaseActivity: DaggerAppCompatActivity() {

@@ -5,7 +5,7 @@ import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
-import com.diego.duarte.popularmovieskotlin.util.SchedulerProvider
+import com.diego.duarte.popularmovieskotlin.util.schedulers.SchedulerProvider
 
 class MoviePresenter (private val repository: Repository,
                       private val movie: Movie,
@@ -17,7 +17,7 @@ class MoviePresenter (private val repository: Repository,
 
 
     override fun getMovie() {
-
+        movie.isFavorite = false
         view.showLoadingDialog()
         view.showMovie(movie)
         getFavorite()
@@ -40,7 +40,7 @@ class MoviePresenter (private val repository: Repository,
             .subscribeOn(schedulerProvider.io())
             ?.observeOn(schedulerProvider.ui())
             ?.subscribe(
-                { if (it.isSuccessful) observer.onNext(it.body()!!)},          // onNext
+                { if (it.isSuccessful) observer.onNext(it.body()!!)}, // onNext
                 { observer.onError(it) }, // onError
                 { observer.onComplete()}   // onComplete
             )
@@ -53,13 +53,14 @@ class MoviePresenter (private val repository: Repository,
         val disposable = repository.saveMovieAsFavorite(movie)
             .subscribeOn(schedulerProvider.trampoline())
             .observeOn(schedulerProvider.ui())
-            .subscribe { observer.onNext(it) }          // onNext
+            .subscribe { observer.onNext(it) }  // onNext
 
         this.addDisposable(disposable)
     }
 
     private fun deleteFavorite(){
         val observer = MovieFavoriteObserver()
+        movie.isFavorite = false
         val disposable = repository.deleteMovieAsFavorite(movie)
             .subscribeOn(schedulerProvider.trampoline())
             .observeOn(schedulerProvider.ui())
@@ -71,7 +72,7 @@ class MoviePresenter (private val repository: Repository,
     private fun getFavorite(){
         val observer = MovieFavoriteObserver()
         val disposable = repository.getMovieFromFavorite(movie)
-            .subscribeOn(schedulerProvider.ui())
+            .subscribeOn(schedulerProvider.trampoline())
             .observeOn(schedulerProvider.ui())
             .subscribe{ observer.onNext(it.isFavorite) }
 

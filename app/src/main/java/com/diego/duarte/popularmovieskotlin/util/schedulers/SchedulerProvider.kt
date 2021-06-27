@@ -1,4 +1,4 @@
-package com.diego.duarte.popularmovieskotlin.util
+package com.diego.duarte.popularmovieskotlin.util.schedulers
 
 import io.reactivex.rxjava3.core.Scheduler
 

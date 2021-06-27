@@ -5,7 +5,7 @@ import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
 import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
-import com.diego.duarte.popularmovieskotlin.util.TestSchedulerProvider
+import com.diego.duarte.popularmovieskotlin.util.schedulers.TestSchedulerProvider
 import io.reactivex.rxjava3.core.Observable
 import junit.framework.Assert.assertTrue
 import org.junit.Before
@@ -15,77 +15,76 @@ import org.mockito.BDDMockito.then
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class MoviesPresenterTest {
 
 
-    private val movieViewMock: MoviesContract.View = mock( MoviesContract.View::class.java)
+    private val moviesViewMock: MoviesContract.View = mock( MoviesContract.View::class.java)
     private val repository: Repository = mock( Repository::class.java)
     private lateinit var objectUnderTest: MoviesContract.Presenter
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        objectUnderTest =  MoviesPresenter(repository, movieViewMock, TestSchedulerProvider())
+        objectUnderTest =  MoviesPresenter(repository, moviesViewMock, TestSchedulerProvider())
     }
 
     @Test
     fun shouldLoadByPopularity(){
         //given
         val page = 1
-        val movies = Movies(0, Arrays.asList(Movie(), Movie()), 0,0)
+        val movies = Movies(0, listOf(Movie(), Movie()), 0,0)
         given(repository.getMoviesByPopularity(page)).willReturn(Observable.just(Response.success(movies)))
 
         //when
         objectUnderTest.getMovies(0, page)
 
         //then
-        then(movieViewMock).should(times(1)).showLoadingDialog()
-        then(movieViewMock).should(times(1)).showMovies(movies.results)
-        then(movieViewMock).should(times(1)).hideLoadingDialog()
-        then(movieViewMock).shouldHaveNoMoreInteractions()
+        then(moviesViewMock).should(times(1)).showLoadingDialog()
+        then(moviesViewMock).should(times(1)).showMovies(movies.results)
+        then(moviesViewMock).should(times(1)).hideLoadingDialog()
+        then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
 
     @Test
     fun shouldLoadByRate(){
         //given
         val page = 1
-        val movies = Movies(0, Arrays.asList(Movie(), Movie()), 0,0)
+        val movies = Movies(0, listOf(Movie(), Movie()), 0,0)
         given(repository.getMoviesByRating(page)).willReturn(Observable.just(Response.success(movies)))
 
         //when
         objectUnderTest.getMovies(1, page)
 
         //then
-        then(movieViewMock).should(times(1)).showLoadingDialog()
-        then(movieViewMock).should(times(1)).showMovies(movies.results)
-        then(movieViewMock).should(times(1)).hideLoadingDialog()
-        then(movieViewMock).shouldHaveNoMoreInteractions()
+        then(moviesViewMock).should(times(1)).showLoadingDialog()
+        then(moviesViewMock).should(times(1)).showMovies(movies.results)
+        then(moviesViewMock).should(times(1)).hideLoadingDialog()
+        then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
 
     @Test
     fun shouldLoadByFavorite(){
         //given
-        val movies = Arrays.asList(Movie(), Movie())
+        val movies = listOf(Movie(), Movie())
         given(repository.getMoviesByFavorite()).willReturn(Observable.just(movies))
 
         //when
         objectUnderTest.getMovies(2, 1)
 
         //then
-        then(movieViewMock).should(times(1)).showLoadingDialog()
-        then(movieViewMock).should(times(1)).showMovies(movies)
-        then(movieViewMock).should(times(1)).hideLoadingDialog()
-        then(movieViewMock).shouldHaveNoMoreInteractions()
+        then(moviesViewMock).should(times(1)).showLoadingDialog()
+        then(moviesViewMock).should(times(1)).showMovies(movies)
+        then(moviesViewMock).should(times(1)).hideLoadingDialog()
+        then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
 
     @Test
     fun shouldLoadNextPageByPopularity(){
         //given
-        val movies = Movies(2, Arrays.asList(Movie(), Movie()), 0,0)
+        val movies = Movies(2, listOf(Movie(), Movie()), 0,0)
         given(repository.getMoviesByPopularity(2)).willReturn(Observable.just(Response.success(movies)))
 
         //when
@@ -93,9 +92,9 @@ class MoviesPresenterTest {
 
         //then
         assertTrue(page == 2)
-        then(movieViewMock).should(times(1)).showMovies(movies.results)
-        then(movieViewMock).should(times(1)).hideLoadingDialog()
-        then(movieViewMock).shouldHaveNoMoreInteractions()
+        then(moviesViewMock).should(times(1)).showMovies(movies.results)
+        then(moviesViewMock).should(times(1)).hideLoadingDialog()
+        then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
 
     @Test
@@ -108,27 +107,27 @@ class MoviesPresenterTest {
         objectUnderTest.getMovies(0, page)
 
         //then
-        then(movieViewMock).should(times(1)).showLoadingDialog()
-        then(movieViewMock).should(times(1)).showError("null")
+        then(moviesViewMock).should(times(1)).showLoadingDialog()
+        then(moviesViewMock).should(times(1)).showError("null")
 
-        then(movieViewMock).shouldHaveNoMoreInteractions()
+        then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
 
 
     @Test
     fun shouldNotLoadByFavorite(){
         //given
-        val movies = ArrayList<Movie>()
+        val movies: List<Movie> = ArrayList()
         given(repository.getMoviesByFavorite()).willReturn(Observable.just(movies))
 
         //when
         objectUnderTest.getMovies(2, 1)
 
         //then
-        then(movieViewMock).should(times(1)).showLoadingDialog()
-        then(movieViewMock).should(times(1)).showError("Index 0 out of bounds for length 0")
+        then(moviesViewMock).should(times(1)).showLoadingDialog()
+        then(moviesViewMock).should(times(1)).showError("Nenhum favorito encontrado.")
 
-        then(movieViewMock).shouldHaveNoMoreInteractions()
+        then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
 
 }

@@ -3,7 +3,7 @@ package com.diego.duarte.popularmovieskotlin.data.source.local
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import io.reactivex.rxjava3.core.Observable
 import io.realm.Realm
-import io.realm.RealmResults
+
 
 
 class RealmBuilder {
@@ -12,9 +12,9 @@ class RealmBuilder {
 
         return Observable.create { emitter ->
             val realm = Realm.getDefaultInstance()
-            val results = realm.where(Movie::class.java).findAllAsync()
+            val results = realm.where(Movie::class.java).findAll()
 
-            emitter.onNext(results.freeze())
+            emitter.onNext(realm.copyFromRealm(results))
 
         }
 
@@ -25,10 +25,8 @@ class RealmBuilder {
         return Observable.create{ emitter ->
             val realm = Realm.getDefaultInstance()
             realm.beginTransaction()
-            realm.executeTransactionAsync{
-                it.insertOrUpdate(movie)
-                emitter.onNext(true)
-            }
+            realm.insertOrUpdate(movie)
+            emitter.onNext(true)
             realm.commitTransaction()
             realm.close()
 
@@ -38,15 +36,15 @@ class RealmBuilder {
 
     fun deleteFavoriteMovie(movie: Movie): Observable<Boolean>{
 
-        return Observable.create{ emitter ->
+        return Observable.create { emitter ->
             val realm = Realm.getDefaultInstance()
             realm.beginTransaction()
-            realm.executeTransactionAsync {
-                it.where(Movie::class.java)
-                    .equalTo("id", movie.id)
-                    .findFirst()?.deleteFromRealm()
-                emitter.onNext(false)
-            }
+
+            realm.where(Movie::class.java)
+                .equalTo("id", movie.id)
+                .findFirst()?.deleteFromRealm()
+            emitter.onNext(false)
+
             realm.commitTransaction()
             realm.close()
 
@@ -63,7 +61,7 @@ class RealmBuilder {
                 .equalTo("id", movie.id)
                 .findFirst()
             if(results != null)
-                emitter.onNext(results)
+                emitter.onNext(realm.copyFromRealm(results))
 
 
         }

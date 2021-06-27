@@ -13,7 +13,8 @@ import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
 
-class MoviesAdapter(private val moviesView: MoviesContract.View) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class MoviesAdapter(private val moviesView: MoviesContract.View):
+    RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     private var movies : List<Movie> = ArrayList()
 
@@ -50,7 +51,8 @@ class MoviesAdapter(private val moviesView: MoviesContract.View) : RecyclerView.
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_movie, parent, false)
         return MovieViewHolder(view)
     }
 

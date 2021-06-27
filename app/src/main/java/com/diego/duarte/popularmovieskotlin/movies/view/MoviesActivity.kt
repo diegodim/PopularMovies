@@ -20,11 +20,6 @@ import javax.inject.Inject
 class MoviesActivity : BaseActivity(), MoviesContract.View,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var bottomNavigation: BottomNavigationView
-    private var page = 1
-    private var navigation = 0
-
     companion object {
         const val INSTANCE_MOVIES_LIST = "movies_list"
         const val INSTANCE_NAVIGATION = "navigation"
@@ -34,9 +29,13 @@ class MoviesActivity : BaseActivity(), MoviesContract.View,
     @Inject
     lateinit var presenter: MoviesContract.Presenter
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var bottomNavigation: BottomNavigationView
+    private var page = 1
+    private var navigation = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_movies)
 
         setSupportActionBar(findViewById(R.id.movies_toolbar))
         bottomNavigation = findViewById(R.id.movie_nav_view)
@@ -72,14 +71,12 @@ class MoviesActivity : BaseActivity(), MoviesContract.View,
 
     private fun initializeRecyclerView() {
 
-
         recyclerView = findViewById(R.id.movies_recycler)
         recyclerView.setHasFixedSize(true)
         recyclerView.recycledViewPool.clear()
         val layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = layoutManager
         recyclerView.setItemViewCacheSize(4)
-
         recyclerView.adapter = MoviesAdapter(this)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -120,6 +117,7 @@ class MoviesActivity : BaseActivity(), MoviesContract.View,
     }
 
     override fun onMovieClicked(movie: Movie) {
+
         val intent = Intent(this, MovieActivity::class.java)
         intent.putExtra(MovieActivity.INTENT_EXTRA_MOVIE, movie)
         startActivity(intent)

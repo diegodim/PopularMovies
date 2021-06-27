@@ -39,7 +39,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
     @Inject
     lateinit var presenter: MovieContract.Presenter
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var videoRecyclerView: RecyclerView
     private lateinit var imageBackdrop: ImageView
     private lateinit var imagePoster: ImageView
     private lateinit var textSynopsis: TextView
@@ -49,9 +49,8 @@ class MovieActivity : BaseActivity(), MovieContract.View {
     private lateinit var textVotes: TextView
     private lateinit var rateScore: RatingBar
     private lateinit var buttonFavorite: FloatingActionButton
-
     private lateinit var appBar: AppBarLayout
-    private lateinit var layout: NestedScrollView
+    private lateinit var mainLayout: NestedScrollView
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +73,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         rateScore = findViewById(R.id.movie_rating_score)
         buttonFavorite = findViewById(R.id.movie_fb_favorite)
         buttonFavorite.setOnClickListener { presenter.favorite() }
-        layout = findViewById(R.id.movie_layout)
+        mainLayout = findViewById(R.id.movie_layout)
         appBar = findViewById(R.id.movie_app_bar)
 
         presenter.getMovie()
@@ -95,16 +94,15 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
     private fun initializeRecyclerView() {
 
-
-        recyclerView = findViewById(R.id.movie_rv_videos)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.recycledViewPool.clear()
-        recyclerView.setItemViewCacheSize(2)
+        videoRecyclerView = findViewById(R.id.movie_rv_videos)
+        videoRecyclerView.setHasFixedSize(true)
+        videoRecyclerView.recycledViewPool.clear()
+        videoRecyclerView.setItemViewCacheSize(2)
         val layoutManager= LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = VideosAdapter(this)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.isNestedScrollingEnabled = false
+        videoRecyclerView.layoutManager = layoutManager
+        videoRecyclerView.adapter = VideosAdapter(this)
+        videoRecyclerView.layoutManager = layoutManager
+        videoRecyclerView.isNestedScrollingEnabled = false
 
     }
 
@@ -112,7 +110,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
         appBar.setExpanded(false, false)
         appBar.isActivated = false
-        layout.visibility = View.GONE
+        mainLayout.visibility = View.GONE
         showLoading()
     }
 
@@ -120,7 +118,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         hideLoading()
         appBar.setExpanded(true, false)
         appBar.isActivated = true
-        layout.visibility = View.VISIBLE
+        mainLayout.visibility = View.VISIBLE
 
     }
 
@@ -128,11 +126,12 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
         appBar.setExpanded(false, false)
         appBar.isActivated = true
-        layout.visibility = View.GONE
+        mainLayout.visibility = View.GONE
         onError(message)
     }
 
     override fun showMovie(movie: Movie) {
+        print(movie.isFavorite.toString())
         Glide
             .with(this)
             .load(this.getString(R.string.url_tmdb_image) + movie.backdrop_path)
@@ -150,6 +149,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imagePoster)
+
         rateScore.rating = (movie.vote_average!! / 2)
         textSynopsis.text = movie.overview
         collapsingToolbarLayout.title = movie.title
@@ -160,7 +160,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
     }
 
     override fun showVideos(videos: Videos) {
-        val adapter: VideosAdapter = recyclerView.adapter as VideosAdapter
+        val adapter: VideosAdapter = videoRecyclerView.adapter as VideosAdapter
         adapter.insertItems(videos)
     }
 
@@ -168,6 +168,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         onBackPressed()
         return true
     }
+
     override fun onVideoClicked(video: Video) {
         val playVideoIntent = Intent(
             Intent.ACTION_VIEW,
@@ -175,9 +176,8 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         )
         val chooser = Intent.createChooser(playVideoIntent, "Open With")
 
-        if (playVideoIntent.resolveActivity(packageManager) != null) {
-            startActivity(chooser)
-        }
+        startActivity(chooser)
+
     }
 
     override fun showFavorite(checked: Boolean) {

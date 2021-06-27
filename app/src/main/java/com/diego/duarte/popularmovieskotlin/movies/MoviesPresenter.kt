@@ -1,18 +1,17 @@
 package com.diego.duarte.popularmovieskotlin.movies
 
-import android.app.Activity
-import com.diego.duarte.popularmovieskotlin.R
 import com.diego.duarte.popularmovieskotlin.base.BaseObserver
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
-import com.diego.duarte.popularmovieskotlin.util.SchedulerProvider
+import com.diego.duarte.popularmovieskotlin.util.schedulers.SchedulerProvider
 
 
 class MoviesPresenter (private val repository: Repository,
                        private val view: MoviesContract.View,
-                       private val schedulerProvider: SchedulerProvider )
+                       private val schedulerProvider: SchedulerProvider
+)
     : BasePresenter(), MoviesContract.Presenter {
 
 
@@ -22,12 +21,12 @@ class MoviesPresenter (private val repository: Repository,
         isLoading = true
         if(page == 1)
             view.showLoadingDialog()
-        if(navigation == 0)
-            getPopularMovies(page)
-        else if(navigation == 1)
-            getTopMovies(page)
-        else if(navigation == 2)
-            getFavoriteMovies()
+
+        when (navigation) {
+            0 -> getPopularMovies(page)
+            1 -> getTopMovies(page)
+            2 -> getFavoriteMovies()
+        }
     }
 
     override fun loadNextPage(navigation: Int, page: Int): Int {
@@ -77,9 +76,6 @@ class MoviesPresenter (private val repository: Repository,
         this.addDisposable(disposable!!)
     }
 
-
-
-
     inner class MoviesListObserver: BaseObserver<Movies>() {
         override fun onNext(t: Movies) {
 
@@ -93,14 +89,14 @@ class MoviesPresenter (private val repository: Repository,
         }
     }
 
-    inner class MoviesLocalListObserver : BaseObserver<List<Movie>?>() {
-        override fun onNext(t: List<Movie>?) {
-            if (t != null) {
-                //println("Success:" + t[0].toString())
+    inner class MoviesLocalListObserver : BaseObserver<List<Movie>>() {
+        override fun onNext(t: List<Movie>) {
+
+            if (t.isNotEmpty()) {
                 view.showMovies(t)
                 view.hideLoadingDialog()
             } else {
-                view.showError((view as Activity).getString(R.string.error_message_favorite_not_found))
+                view.showError("Nenhum favorito encontrado.")
             }
         }
 

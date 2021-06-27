@@ -1,14 +1,12 @@
 package com.diego.duarte.popularmovieskotlin.di.module
 
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import com.diego.duarte.popularmovieskotlin.di.scope.MovieScope
 import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
 import com.diego.duarte.popularmovieskotlin.movie.MovieContract
-import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
-import com.diego.duarte.popularmovieskotlin.util.SchedulerProvider
+import com.diego.duarte.popularmovieskotlin.util.schedulers.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -34,6 +32,7 @@ class MovieModule {
     fun providePresenter(repository: Repository,
                          movie: Movie,
                          view: MovieContract.View,
-                         schedulerProvider: SchedulerProvider)
+                         schedulerProvider: SchedulerProvider
+    )
     = MoviePresenter(repository, movie, view, schedulerProvider) as MovieContract.Presenter
 }
