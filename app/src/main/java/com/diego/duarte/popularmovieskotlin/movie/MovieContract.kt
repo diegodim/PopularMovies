@@ -12,10 +12,11 @@ interface MovieContract {
         fun showMovie(movie: Movie)
         fun showVideos(videos: Videos)
         fun onVideoClicked(video: Video)
+        fun showFavorite(checked:Boolean)
     }
     interface Presenter
     {
         fun getMovie()
-        fun setFavorite()
+        fun favorite()
     }
 }

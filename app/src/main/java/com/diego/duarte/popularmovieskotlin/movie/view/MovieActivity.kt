@@ -73,7 +73,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         textVotes = findViewById(R.id.movie_text_total_votes)
         rateScore = findViewById(R.id.movie_rating_score)
         buttonFavorite = findViewById(R.id.movie_fb_favorite)
-        buttonFavorite.setOnClickListener { presenter.setFavorite() }
+        buttonFavorite.setOnClickListener { presenter.favorite() }
         layout = findViewById(R.id.movie_layout)
         appBar = findViewById(R.id.movie_app_bar)
 
@@ -178,6 +178,13 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         if (playVideoIntent.resolveActivity(packageManager) != null) {
             startActivity(chooser)
         }
+    }
+
+    override fun showFavorite(checked: Boolean) {
+        if(checked)
+            buttonFavorite.setImageResource(R.drawable.ic_favorite_24)
+        else
+            buttonFavorite.setImageResource(R.drawable.ic_favorite_border_24)
     }
 
 }

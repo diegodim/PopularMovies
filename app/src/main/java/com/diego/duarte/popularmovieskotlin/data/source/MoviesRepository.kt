@@ -3,8 +3,6 @@ package com.diego.duarte.popularmovieskotlin.data.source
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.source.api.RetrofitBuilder
 import com.diego.duarte.popularmovieskotlin.data.source.local.RealmBuilder
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class MoviesRepository: Repository {
 
@@ -18,6 +16,8 @@ class MoviesRepository: Repository {
 
     override fun saveMovieAsFavorite (movie: Movie) = RealmBuilder().saveFavoriteMovie(movie)
 
-    //fun deleteMovieFromFavorites (movie: Movie)
+    override fun deleteMovieAsFavorite (movie: Movie) = RealmBuilder().deleteFavoriteMovie(movie)
+
+    override fun getMovieFromFavorite(movie: Movie) = RealmBuilder().getFavoriteMovie(movie)
 
 }

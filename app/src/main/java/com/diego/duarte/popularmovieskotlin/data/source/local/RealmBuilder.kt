@@ -8,7 +8,7 @@ import io.realm.RealmResults
 
 class RealmBuilder {
 
-    fun getFavoritesMovies(): Observable<RealmResults<Movie>>{
+    fun getFavoritesMovies(): Observable<List<Movie>>{
 
         return Observable.create { emitter ->
             val realm = Realm.getDefaultInstance()
@@ -36,6 +36,38 @@ class RealmBuilder {
 
     }
 
+    fun deleteFavoriteMovie(movie: Movie): Observable<Boolean>{
 
+        return Observable.create{ emitter ->
+            val realm = Realm.getDefaultInstance()
+            realm.beginTransaction()
+            realm.executeTransactionAsync {
+                it.where(Movie::class.java)
+                    .equalTo("id", movie.id)
+                    .findFirst()?.deleteFromRealm()
+                emitter.onNext(false)
+            }
+            realm.commitTransaction()
+            realm.close()
+
+        }
+
+    }
+
+    fun getFavoriteMovie(movie: Movie): Observable<Movie>{
+
+        return Observable.create { emitter ->
+            val realm = Realm.getDefaultInstance()
+
+            val results = realm.where(Movie::class.java)
+                .equalTo("id", movie.id)
+                .findFirst()
+            if(results != null)
+                emitter.onNext(results)
+
+
+        }
+
+    }
 
 }

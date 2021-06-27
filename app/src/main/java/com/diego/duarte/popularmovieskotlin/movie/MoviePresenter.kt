@@ -4,60 +4,89 @@ import com.diego.duarte.popularmovieskotlin.base.BaseObserver
 import com.diego.duarte.popularmovieskotlin.base.BasePresenter
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
-import com.diego.duarte.popularmovieskotlin.data.source.MoviesRepository
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.diego.duarte.popularmovieskotlin.util.SchedulerProvider
 
 class MoviePresenter (private val repository: Repository,
-                      val movie: Movie, private
-                      val view: MovieContract.View) : BasePresenter(), MovieContract.Presenter{
+                      private val movie: Movie,
+                      private val view: MovieContract.View,
+                      private val schedulerProvider: SchedulerProvider
+)
+    : BasePresenter(), MovieContract.Presenter{
 
 
 
     override fun getMovie() {
-        val observer= VideosListObserver()
+
         view.showLoadingDialog()
         view.showMovie(movie)
+        getFavorite()
+        getVideos()
+
+    }
+
+    override fun favorite(){
+
+        if(!movie.isFavorite) {
+            setFavorite()
+        }else{
+            deleteFavorite()
+        }
+    }
+
+    private fun getVideos(){
+        val observer= VideosListObserver()
         val disposable = repository.getMovieVideos(movie.id!!)
-            ?.subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulerProvider.io())
+            ?.observeOn(schedulerProvider.ui())
             ?.subscribe(
                 { if (it.isSuccessful) observer.onNext(it.body()!!)},          // onNext
                 { observer.onError(it) }, // onError
                 { observer.onComplete()}   // onComplete
             )
         this.addDisposable(disposable!!)
-
     }
 
-    override fun setFavorite(){
-        val observer = MovieSaveObserver()
-
+    private fun setFavorite(){
+        val observer = MovieFavoriteObserver()
+        movie.isFavorite = true
         val disposable = repository.saveMovieAsFavorite(movie)
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { observer.onNext(it)},          // onNext
-                { observer.onError(it)}, // onError
-                { observer.onComplete()}   // onComplete)
-            )
+            .subscribeOn(schedulerProvider.trampoline())
+            .observeOn(schedulerProvider.ui())
+            .subscribe { observer.onNext(it) }          // onNext
+
         this.addDisposable(disposable)
     }
 
-    inner class MovieSaveObserver: BaseObserver<Boolean>(){
-        override fun onNext(t: Boolean) {
-            //TODO
-            //println("Success:" + t.toString())
-        }
+    private fun deleteFavorite(){
+        val observer = MovieFavoriteObserver()
+        val disposable = repository.deleteMovieAsFavorite(movie)
+            .subscribeOn(schedulerProvider.trampoline())
+            .observeOn(schedulerProvider.ui())
+            .subscribe { observer.onNext(it) }
 
-        override fun onError(e: Throwable?) {
-            //TODO
-            println("Error"+ e?.message.toString())
-
-        }
-
+        this.addDisposable(disposable)
     }
+
+    private fun getFavorite(){
+        val observer = MovieFavoriteObserver()
+        val disposable = repository.getMovieFromFavorite(movie)
+            .subscribeOn(schedulerProvider.ui())
+            .observeOn(schedulerProvider.ui())
+            .subscribe{ observer.onNext(it.isFavorite) }
+
+        this.addDisposable(disposable)
+    }
+
+
+
+    inner class MovieFavoriteObserver: BaseObserver<Boolean>(){
+        override fun onNext(t: Boolean) {
+            view.showFavorite(t)
+            movie.isFavorite = t
+        }
+    }
+
 
     inner class VideosListObserver: BaseObserver<Videos>() {
         override fun onNext(t: Videos) {

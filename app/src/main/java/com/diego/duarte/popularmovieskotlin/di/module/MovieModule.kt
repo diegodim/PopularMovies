@@ -8,6 +8,7 @@ import com.diego.duarte.popularmovieskotlin.movie.MoviePresenter
 import com.diego.duarte.popularmovieskotlin.movie.view.MovieActivity
 import com.diego.duarte.popularmovieskotlin.movie.MovieContract
 import com.diego.duarte.popularmovieskotlin.movies.MoviesContract
+import com.diego.duarte.popularmovieskotlin.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -30,6 +31,9 @@ class MovieModule {
 
     @MovieScope
     @Provides
-    fun providePresenter(repository: Repository, movie: Movie, view: MovieContract.View)
-    = MoviePresenter(repository, movie, view) as MovieContract.Presenter
+    fun providePresenter(repository: Repository,
+                         movie: Movie,
+                         view: MovieContract.View,
+                         schedulerProvider: SchedulerProvider)
+    = MoviePresenter(repository, movie, view, schedulerProvider) as MovieContract.Presenter
 }

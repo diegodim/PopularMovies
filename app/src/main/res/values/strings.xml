@@ -5,6 +5,7 @@
     <string name="error_message_no_internet">Sem conexão com a internet.</string>
     <string name="error_message_unknown">Aconteceu um erro inesperado.</string>
     <string name="error_message_timeout">O servidor demorou muito para responder.</string>
+    <string name="error_message_favorite_not_found">Nenhum favorito encontrado.</string>
 
     <string name="action_retry">Tentar</string>
 
@@ -25,7 +26,7 @@
     <string name="url_tmdb_image">https://image.tmdb.org/t/p/w500</string>
     <string name="url_tmdb">https://api.themoviedb.org/3/</string>
     <string name="url_youtube_video">https://www.youtube.com/watch?v=</string>
-    <string name="message_favorite_not_found">Nenhum favorito encontrado.</string>
+
 
 
 </resources>

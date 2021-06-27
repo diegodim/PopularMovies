@@ -19,7 +19,9 @@ class MoviesModule {
 
     @MoviesScope
     @Provides
-    fun providePresenter(repository: Repository, view: MoviesContract.View, schedulerProvider: SchedulerProvider)
+    fun providePresenter(repository: Repository,
+                         view: MoviesContract.View,
+                         schedulerProvider: SchedulerProvider)
     = MoviesPresenter(repository, view, schedulerProvider) as MoviesContract.Presenter
 
 }

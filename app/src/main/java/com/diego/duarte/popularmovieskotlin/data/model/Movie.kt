@@ -17,5 +17,6 @@ open class Movie(
     var backdrop_path: String? = null,
     var vote_average: Float? = null,
     var vote_count: Int? = null,
+    var isFavorite: Boolean = false
     ): Parcelable, RealmObject(){}
 

@@ -8,12 +8,12 @@ import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import com.diego.duarte.popularmovieskotlin.util.SchedulerProvider
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
-import io.realm.RealmResults
-
-class MoviesPresenter (private val repository: Repository, private val view: MoviesContract.View, private val schedulerProvider: SchedulerProvider ) : BasePresenter(), MoviesContract.Presenter {
+class MoviesPresenter (private val repository: Repository,
+                       private val view: MoviesContract.View,
+                       private val schedulerProvider: SchedulerProvider )
+    : BasePresenter(), MoviesContract.Presenter {
 
 
     private var isLoading = false
@@ -41,24 +41,24 @@ class MoviesPresenter (private val repository: Repository, private val view: Mov
 
     private fun getPopularMovies(page: Int) {
 
-        val observer = MoviesListObserver<Movies?>()
+        val observer = MoviesListObserver()
         val disposable = repository.getMoviesByPopularity(page)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(
-            { if (it.isSuccessful)  observer.onNext(it.body())  }, // onNext
+            { if (it.isSuccessful)  observer.onNext(it.body()!!)  }, // onNext
             { observer.onError(it) }
         )
         this.addDisposable(disposable!!)
     }
 
     private fun getTopMovies(page: Int) {
-        val observer = MoviesListObserver<Movies?>()
+        val observer = MoviesListObserver()
         val disposable = repository.getMoviesByRating(page)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             ?.subscribe(
-            { if (it.isSuccessful)  observer.onNext(it.body())  }, // onNext
+            { if (it.isSuccessful)  observer.onNext(it.body()!!)  }, // onNext
             { observer.onError(it) }
         )
         this.addDisposable(disposable!!)
@@ -68,8 +68,8 @@ class MoviesPresenter (private val repository: Repository, private val view: Mov
     private fun getFavoriteMovies(){
         val observer = MoviesLocalListObserver()
         val disposable = repository.getMoviesByFavorite()
-            .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.trampoline())
+            .observeOn(schedulerProvider.ui())
             .subscribe(
             { observer.onNext(it) }, // onNext
             { observer.onError(it) }
@@ -80,16 +80,12 @@ class MoviesPresenter (private val repository: Repository, private val view: Mov
 
 
 
-    inner class MoviesListObserver<T> : BaseObserver<T>() {
-        override fun onNext(t: T) {
+    inner class MoviesListObserver: BaseObserver<Movies>() {
+        override fun onNext(t: Movies) {
 
-            if (t != null) {
-
-                view.showMovies((t as Movies).results)
-                view.hideLoadingDialog()
-                isLoading = false
-
-            }
+            view.showMovies(t.results)
+            view.hideLoadingDialog()
+            isLoading = false
 
         }
         override fun onError(e: Throwable?) {
@@ -97,14 +93,14 @@ class MoviesPresenter (private val repository: Repository, private val view: Mov
         }
     }
 
-    inner class MoviesLocalListObserver : BaseObserver<RealmResults<Movie>?>() {
-        override fun onNext(t: RealmResults<Movie>?) {
+    inner class MoviesLocalListObserver : BaseObserver<List<Movie>?>() {
+        override fun onNext(t: List<Movie>?) {
             if (t != null) {
-                println("Success:" + t[0].toString())
+                //println("Success:" + t[0].toString())
                 view.showMovies(t)
                 view.hideLoadingDialog()
             } else {
-                view.showError((view as Activity).getString(R.string.message_favorite_not_found))
+                view.showError((view as Activity).getString(R.string.error_message_favorite_not_found))
             }
         }
 

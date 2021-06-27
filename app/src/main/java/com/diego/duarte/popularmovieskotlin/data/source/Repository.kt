@@ -4,9 +4,7 @@ import com.diego.duarte.popularmovieskotlin.data.model.Movie
 import com.diego.duarte.popularmovieskotlin.data.model.Movies
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import io.reactivex.rxjava3.core.Observable
-import io.realm.RealmResults
 import retrofit2.Response
-import javax.inject.Singleton
 
 
 interface Repository {
@@ -17,9 +15,11 @@ interface Repository {
 
     fun getMovieVideos(id: Int): Observable<Response<Videos>>
 
-    fun getMoviesByFavorite(): Observable<RealmResults<Movie>>
+    fun getMoviesByFavorite(): Observable<List<Movie>>
 
     fun saveMovieAsFavorite (movie: Movie): Observable<Boolean>
 
+    fun deleteMovieAsFavorite (movie: Movie): Observable<Boolean>
 
+    fun getMovieFromFavorite (movie: Movie): Observable<Movie>
 }
