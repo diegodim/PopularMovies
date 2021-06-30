@@ -16,6 +16,10 @@
         </item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.PopularMoviesKotlin.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
         <item name="trackThickness">20dp</item>

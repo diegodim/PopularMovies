@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Popular Movies</string>
 
-    <string name="error_message_no_connection">Falha na conexão!</string>
+    <string name="error_message_no_connection">Algo deu errado!</string>
     <string name="error_message_no_internet">Sem conexão com a internet.</string>
     <string name="error_message_unknown">Aconteceu um erro inesperado.</string>
     <string name="error_message_timeout">O servidor demorou muito para responder.</string>

@@ -2,7 +2,10 @@ package com.diego.duarte.popularmovieskotlin.base
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.diego.duarte.popularmovieskotlin.R
 import dagger.android.AndroidInjection
@@ -14,7 +17,7 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
     private lateinit var viewLoading: View
     private lateinit var buttonError: Button
     private lateinit var textError: TextView
-
+    private lateinit var imageLoading: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +30,7 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
         textError = findViewById(R.id.view_error_txt_cause)
         buttonError = findViewById(R.id.view_error_btn_retry)
         buttonError.setOnClickListener { retryClick() }
+
     }
 
     protected fun hideLoading(){
@@ -35,6 +39,9 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
     }
 
     protected fun showLoading(){
+        imageLoading = findViewById(R.id.image_load)
+        val pulse: Animation = AnimationUtils.loadAnimation(this, R.anim.pulse)
+        imageLoading.startAnimation(pulse)
         viewLoading.visibility = View.VISIBLE
         viewError.visibility = View.GONE
 

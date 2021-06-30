@@ -10,14 +10,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.PopularMoviesKotlin.NoActionBar"
         android:supportsRtl="true">
         <activity
             android:name=".movie.view.MovieActivity"
-            android:theme="@style/Theme.PopularMoviesKotlin.NoActionBar"
             android:launchMode = "singleTop"/>
         <activity
             android:name=".movies.view.MoviesActivity"
-            android:theme="@style/Theme.PopularMoviesKotlin.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

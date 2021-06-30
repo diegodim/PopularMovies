@@ -108,7 +108,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
     override fun showLoadingDialog() {
 
-        appBar.setExpanded(false, false)
+        appBar.setExpanded(false)
         appBar.isActivated = false
         mainLayout.visibility = View.GONE
         showLoading()
@@ -116,7 +116,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
     override fun hideLoadingDialog() {
         hideLoading()
-        appBar.setExpanded(true, false)
+        appBar.setExpanded(true)
         appBar.isActivated = true
         mainLayout.visibility = View.VISIBLE
 
@@ -124,7 +124,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
     override fun showError(message: String) {
 
-        appBar.setExpanded(false, false)
+        appBar.setExpanded(false)
         appBar.isActivated = true
         mainLayout.visibility = View.GONE
         onError(message)
