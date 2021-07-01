@@ -35,7 +35,7 @@ class MoviesActivity : BaseActivity(), MoviesContract.View,
     private var navigation = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_PopularMoviesKotlin_NoActionBar);
+        setTheme(R.style.Theme_PopularMoviesKotlin_NoActionBar)
         super.onCreate(savedInstanceState)
         setSupportActionBar(findViewById(R.id.movies_toolbar))
         bottomNavigation = findViewById(R.id.movie_nav_view)

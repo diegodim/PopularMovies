@@ -8,6 +8,7 @@ import com.diego.duarte.popularmovieskotlin.movies.MoviesPresenter
 import com.diego.duarte.popularmovieskotlin.util.schedulers.TestSchedulerProvider
 import io.reactivex.rxjava3.core.Observable
 import junit.framework.Assert.assertTrue
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
@@ -101,14 +102,15 @@ class MoviesPresenterTest {
     fun shouldNotLoadByPopularity(){
         //given
         val page = 1
-        given(repository.getMoviesByPopularity(page)).willReturn(Observable.just(Response.success(null)))
+        val response = "".toResponseBody()
+        given(repository.getMoviesByPopularity(page)).willReturn(Observable.just(Response.error(404, response)))
 
         //when
         objectUnderTest.getMovies(0, page)
 
         //then
         then(moviesViewMock).should(times(1)).showLoadingDialog()
-        then(moviesViewMock).should(times(1)).showError("null")
+        then(moviesViewMock).should(times(1)).showError("")
 
         then(moviesViewMock).shouldHaveNoMoreInteractions()
     }
@@ -125,7 +127,7 @@ class MoviesPresenterTest {
 
         //then
         then(moviesViewMock).should(times(1)).showLoadingDialog()
-        then(moviesViewMock).should(times(1)).showError("Nenhum favorito encontrado.")
+        then(moviesViewMock).should(times(1)).showError("")
 
         then(moviesViewMock).shouldHaveNoMoreInteractions()
     }

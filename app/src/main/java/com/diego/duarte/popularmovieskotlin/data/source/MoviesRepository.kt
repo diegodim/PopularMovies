@@ -14,7 +14,7 @@ class MoviesRepository: Repository {
 
     override fun getMoviesByFavorite() = RealmBuilder().getFavoritesMovies()
 
-    override fun saveMovieAsFavorite (movie: Movie) = RealmBuilder().saveFavoriteMovie(movie)
+    override fun setMovieAsFavorite (movie: Movie) = RealmBuilder().setFavoriteMovie(movie)
 
     override fun deleteMovieAsFavorite (movie: Movie) = RealmBuilder().deleteFavoriteMovie(movie)
 
