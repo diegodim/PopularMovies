@@ -134,7 +134,7 @@ class MovieActivity : BaseActivity(), MovieContract.View {
         print(movie.isFavorite.toString())
         Glide
             .with(this)
-            .load(this.getString(R.string.url_tmdb_image) + movie.backdrop_path)
+            .load(this.getString(R.string.url_tmdb_image) + movie.backdropPath)
             .placeholder(R.color.gray)
             .centerInside()
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
@@ -143,20 +143,20 @@ class MovieActivity : BaseActivity(), MovieContract.View {
 
         Glide
             .with(this)
-            .load(this.getString(R.string.url_tmdb_image)  + movie.poster_path)
+            .load(this.getString(R.string.url_tmdb_image)  + movie.posterPath)
             .placeholder(R.drawable.movie_placeholder)
             .centerInside()
             .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imagePoster)
 
-        rateScore.rating = (movie.vote_average!! / 2)
+        rateScore.rating = (movie.voteAverage!! / 2)
         textSynopsis.text = movie.overview
         collapsingToolbarLayout.title = movie.title
         textTitle.text = movie.title
-        textScore.text = movie.vote_average.toString()
-        textVotes.text = movie.vote_count.toString()
-        textDate.text = Util().formateDate(movie.release_date)
+        textScore.text = movie.voteAverage.toString()
+        textVotes.text = movie.voteCount.toString()
+        textDate.text = Util().formateDate(movie.releaseDate)
     }
 
     override fun showVideos(videos: Videos) {

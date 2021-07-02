@@ -31,7 +31,7 @@ class MoviesAdapter(private val moviesView: MoviesContract.View):
         fun bindItem(movie: Movie) {
             Glide
                 .with(itemView.context)
-                .load(itemView.context.getString(R.string.url_tmdb_image) + movie.poster_path)
+                .load(itemView.context.getString(R.string.url_tmdb_image) + movie.posterPath)
                 .placeholder(R.drawable.movie_placeholder)
                 .centerInside()
                 .set(Downsampler.DECODE_FORMAT, DecodeFormat.PREFER_RGB_565)

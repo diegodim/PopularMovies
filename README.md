@@ -1,5 +1,7 @@
 # Popular Movies Kotlin App
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=diegodim_PopularMovies)
+
 This app has been build using a Model-View-Presenter (MVP). 
 
 <img src="./art/screenshot1.png" width="250"> <img src="./art/screenshot2.png" width="250">
