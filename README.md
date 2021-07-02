@@ -31,6 +31,7 @@ git clone https://github.com/diegodim/PopularMovies
 * [Gson](https://github.com/google/gson)
 * [Glide](https://github.com/bumptech/glide)
 * [Mockito](https://github.com/mockito/mockito) 
+* [LeakCanary](https://square.github.io/leakcanary/) 
 
 
 

@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 class RetrofitBuilder {
@@ -33,6 +34,9 @@ class RetrofitBuilder {
         builder.addNetworkInterceptor(interceptor)
 
         builder.addInterceptor(ApiKeyInterceptor(BuildConfig.TMDB_API_KEY))
+        builder.connectTimeout(20, TimeUnit.SECONDS)
+        builder.readTimeout(20, TimeUnit.SECONDS)
+        builder.writeTimeout(20, TimeUnit.SECONDS)
 
         return builder.build()
     }
