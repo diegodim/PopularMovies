@@ -30,9 +30,10 @@ TMDB_API_KEY = "your_tmdb_api_key_here"
 * [RxJava3](https://github.com/ReactiveX/RxJava)
 * [RxAndroid3](https://github.com/ReactiveX/RxAndroid)
 * [Retrofit](https://github.com/square/retrofit)
-* [OkHttp] (https://github.com/square/okhttp)
+* [OkHttp](https://github.com/square/okhttp)
 * [Gson](https://github.com/google/gson)
 * [Glide](https://github.com/bumptech/glide)
+* [Mockito](https://github.com/mockito/mockito) 
 
 
 
