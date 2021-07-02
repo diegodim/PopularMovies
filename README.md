@@ -12,7 +12,7 @@ This app has been build using a Model-View-Presenter (MVP).
 git clone https://github.com/diegodim/PopularMovies
 ```
 
-2. Open Android Studio and open the project from
+2. Open Android Studio and open the project.
 
 3. Get a API key from [The Movie Database](https://www.themoviedb.org/) website.
 
