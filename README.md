@@ -2,6 +2,9 @@
 
 This app has been build using a Model-View-Presenter (MVP). 
 
+<img src="./art/screenshot1.png" width="200" align="center" hspace="20">
+<img src="./art/screenshot2.png" width="200" align="center" hspace="20">
+
 ## How to build the app
 
 1. Clone this repository in your local machine:
