@@ -2,7 +2,7 @@
 
 This app has been build using a Model-View-Presenter (MVP). 
 
-<img src="./art/screenshot1.png" width="200"> <img src="./art/screenshot2.png" width="200">
+<img src="./art/screenshot1.png" width="250"> <img src="./art/screenshot2.png" width="250">
 
 ## How to build the app
 
