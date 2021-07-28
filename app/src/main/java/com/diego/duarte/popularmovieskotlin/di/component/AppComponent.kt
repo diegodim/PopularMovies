@@ -3,7 +3,7 @@ package com.diego.duarte.popularmovieskotlin.di.component
 import android.app.Application
 import com.diego.duarte.popularmovieskotlin.di.module.BuilderModule
 import com.diego.duarte.popularmovieskotlin.base.BaseApp
-import com.diego.duarte.popularmovieskotlin.di.module.ApiModule
+import com.diego.duarte.popularmovieskotlin.di.module.RepositoryModule
 import com.diego.duarte.popularmovieskotlin.di.module.AppModule
 import com.diego.duarte.popularmovieskotlin.di.module.SchedulerModule
 import dagger.BindsInstance
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AndroidSupportInjectionModule::class, AppModule::class,
-    BuilderModule::class, ApiModule::class, SchedulerModule::class])
+    BuilderModule::class, RepositoryModule::class, SchedulerModule::class])
 interface AppComponent: AndroidInjector<BaseApp> {
 
     override fun inject(app: BaseApp)

@@ -8,9 +8,6 @@ abstract class BasePresenter {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    open fun onCreate() {
-    }
-
     @CallSuper
     open fun onDestroy() {
         compositeDisposable.clear()

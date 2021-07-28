@@ -1,6 +1,7 @@
 package com.diego.duarte.popularmovieskotlin.data.model
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import kotlinx.android.parcel.Parcelize
@@ -12,11 +13,16 @@ open class Movie(
     var id: Int? = null,
     var title: String? = null,
     var overview: String? = null,
-    var release_date: Date? = null,
-    var poster_path: String? = null,
-    var backdrop_path: String? = null,
-    var vote_average: Float? = null,
-    var vote_count: Int? = null,
+    @SerializedName("release_date")
+    var releaseDate: Date? = null,
+    @SerializedName("poster_path")
+    var posterPath: String? = null,
+    @SerializedName("backdrop_path")
+    var backdropPath: String? = null,
+    @SerializedName("vote_average")
+    var voteAverage: Float? = null,
+    @SerializedName("vote_count")
+    var voteCount: Int? = null,
     var isFavorite: Boolean = false
     ): Parcelable, RealmObject()
 

@@ -1,7 +1,6 @@
 package com.diego.duarte.popularmovieskotlin
 
 import com.diego.duarte.popularmovieskotlin.data.model.Movie
-import com.diego.duarte.popularmovieskotlin.data.model.Video
 import com.diego.duarte.popularmovieskotlin.data.model.Videos
 import com.diego.duarte.popularmovieskotlin.data.source.Repository
 import com.diego.duarte.popularmovieskotlin.movie.MovieContract
@@ -56,8 +55,8 @@ class MoviePresenterTest {
     fun shouldFavorite(){
         //given
         movie.isFavorite = false
-        given(repository.saveMovieAsFavorite(movie))
-            .willReturn(Observable.just(true))
+        given(repository.setMovieAsFavorite(movie))
+            .willReturn(Observable.just(movie))
 
         //when
         objectUnderTest.favorite()
@@ -73,7 +72,7 @@ class MoviePresenterTest {
         //given
         movie.isFavorite = true
         given(repository.deleteMovieAsFavorite(movie))
-            .willReturn(Observable.just(false))
+            .willReturn(Observable.just(movie))
 
         //when
         objectUnderTest.favorite()
@@ -83,4 +82,5 @@ class MoviePresenterTest {
             .showFavorite(false)
         then(movieViewMock).shouldHaveNoMoreInteractions()
     }
+
 }

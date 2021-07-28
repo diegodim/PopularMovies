@@ -4,7 +4,7 @@
     android:fromYScale="1"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:repeatCount="30"
+    android:repeatCount="1000000"
     android:repeatMode="reverse"
     android:toXScale="1.2"
     android:toYScale="1.2" />

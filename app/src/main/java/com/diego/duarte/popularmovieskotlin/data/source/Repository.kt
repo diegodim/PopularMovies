@@ -17,9 +17,9 @@ interface Repository {
 
     fun getMoviesByFavorite(): Observable<List<Movie>>
 
-    fun saveMovieAsFavorite (movie: Movie): Observable<Boolean>
+    fun setMovieAsFavorite (movie: Movie): Observable<Movie>
 
-    fun deleteMovieAsFavorite (movie: Movie): Observable<Boolean>
+    fun deleteMovieAsFavorite (movie: Movie): Observable<Movie>
 
     fun getMovieFromFavorite (movie: Movie): Observable<Movie>
 }
